@@ -244,6 +244,7 @@ console.log(a + '');   //dima
 console.log(+a);   //22
 */
 
+
 //? toString/valueOf
 //? если нет метода toPrimitive, то код сначала попробует вызывать toString для хинта string, valueOf для иных хинтов
 /*
@@ -263,6 +264,16 @@ console.log(+a);   //22
 */
 
 //? в отсутствие Symbol.toPrimitive и valueOf, toString обработает все случаи преобразований к примитивам
+
+
+//? Symbol.toStringTag
+//? меняет поведение методов преобразования обьектов к строке, можно указать, какое строковое значение будет возвращено
+/*
+let obj = {
+    [Symbol.toStringTag]: "User",
+}
+alert(obj);   '[object User]'
+*/
 
 
 //? преобразование в json toJSON
@@ -820,6 +831,294 @@ askPassword(user.login.bind(user, true), user.login.bind(user, false));
 
 
 
+//!====================================================================================================
+//? Promises Промисы
+// https://learn.javascript.ru/promise-basics
+//? Промис(обещание), это класс для работы с асинхронными функциями
+//? Принимает функцию, в которую прокидывается 2 аргумента resolve, reject, первый можно вызывать, когда все ок, и асинхронная операция завершилась, второй - когда закончилась ошибкой
+
+
+//? Может вернуть либо успешное значение либо ошибку, сразу вызвать и то и то нельзя
+
+
+//? then, catch, finally
+
+//? then в цепочке вызовов отработает, когда промис закончится, then принимает 2 аргумента в виде функций, и вызывает первую, когда промис выполнился успешно, второй - когда с ошибкой
+//? по сути catch делает тоже самое
+/*
+promise.then(
+  function(result);   //обработает успешное выполнение
+  function(error);   //обработает ошибку
+);
+*/
+
+
+
+
+
+
+
+
+
+
+//?====================================================================================================
+//? Цепочка промисов
+//https://learn.javascript.ru/promise-chaining
+
+//? в then можно создать новый промис и вернуть его, и получается мы в каждом then можем создать асинхронную функцию, которая будет выполняться последовательно и будут ждать другие
+//? в примере ниже я создал промис и вызвал resolve через 2 секунды, все это время в then, мой код ждал меня, затем я снова во втором then создал асинхронную функцию и вернул ее из then, и следующий после then выполнится только когда вернется значение из предыдущего
+/*
+console.log('before promise');
+let p = new Promise((resolve, reject) => {
+    console.log('start async function');
+
+    setTimeout(() => {
+        console.log('async code');
+        resolve();
+    }, 2000);
+});
+p
+    .then(() => {
+        console.log('resolve then');
+    })
+    .then(() => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                console.log('second async function');
+                resolve();
+            }, 2000);
+        })
+    })
+    .then(() => {
+        console.log('sync function after async');
+    });
+*/
+
+
+//? В цепочке промисов мы можем выкинуть ошибку в блоке catch, и отработает следующий catch, может быть удобно, если в один промис определенная ошибка, то мы можем перейти к другому catch блоку который для такой ошибки и предназначен
+
+
+//? Если в промисе выпала ошибка и у нас нет блока catch, то наш скрипт упадет полностью, но также можно отследить такие ошибки через глобальный слушатель 'unhandledrejection', который вешается на window
+
+
+
+
+
+
+
+
+
+
+//?====================================================================================================
+//? Promise API
+// https://learn.javascript.ru/promise-api
+
+//? Promise.all
+//? ждет выполнения всех переданных ему в виде массива(или любого перебираемого обьекта) промисов, и только затем вызывается функция then, а как результат у функции then будет массив всех значений промисов переданных, а также они будут в той же последовательности, в которой были переданы
+
+//? если хоть один промис был закончен с ошибкой, то all немедленно завершится и будет вызван блок cathc
+
+//? в Promise.all помимо промисов можно также передать обычные значения, который затем также будут собраны в массив по окончании
+/*
+let _1 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('1');
+        resolve();
+    }, 1000);
+});
+let _2 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('2');
+        resolve();
+    }, 2000);
+});
+let _3 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('3');
+        resolve();
+    }, 3000);
+});
+
+Promise.all([_1, _2, _3])
+    .then((res) => {
+        console.log(res);   //[undefined, undefined, undefined] потому что наши промисы ничего не возвращали
+        console.log('after waiting all promises');
+    });
+*/
+
+
+
+
+
+//? Promise.allSettled
+//? этот метод делает все тоже самое, что и all, только если один промис был выполнен с ошибкой, то он не упадет, а продолжит работу, затем также соберет все промисы в массив преобразив в обьект каждый из них у которого будет одно поле это value, второе это status(fulfilled, rejected)
+/*
+let _1 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('1');
+        resolve();
+    }, 1000);
+});
+let _2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log('2');
+        reject();
+    }, 2000);
+});
+let _3 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('3');
+        resolve();
+    }, 3000);
+});
+
+Promise.allSettled([_1, _2, _3])
+    .then((res) => {
+        console.log(res);
+        console.log('after waiting all promises');
+    });
+*/
+
+
+//? В старых браузерах может понадобиться полифилл
+//? Логика такая: при передаче промисов методу all, мы проходимся по ним map'ом, и когда он будет выполняться, map наш будет менять насильно в статус выполнен, и уже в обработчике мы будем создавать обьект со значениями
+/*
+let _1 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('1');
+        resolve();
+    }, 1000);
+});
+let _2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log('2');
+        reject();
+    }, 2000);
+});
+let _3 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('3');
+        resolve();
+    }, 3000);
+});
+
+Promise.all([_1, _2, _3]
+    .map(p => Promise.resolve(p)
+        .then(
+            (value) => {
+                console.log('then in map');
+                return { value, status: 'good' }
+            },
+            (error) => {
+                console.log('catch in map');
+                return { value: error, status: 'bad' }
+            },
+        )
+    )
+).then(res => {
+    console.log(res);
+});
+*/
+
+
+
+
+
+//? Promise.race
+//? Ждет первого готового и запускает then блок, в который прокидывает значения готового промиса
+/*
+let _1 = new Promise((resolve) => {
+    setTimeout(() => {
+        console.log('1');
+        resolve();
+    }, 1000);
+});
+let _2 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log('2');
+        reject();
+    }, 2000);
+});
+
+Promise.race([_1, _2, _3]).then(res => {
+    console.log(res);
+});
+*/
+
+
+
+
+
+//? Promise.resolve/reject
+//? Создает промис насильно с определенным результатом, нужен для тогда, когда мы обязательно должны получить промис из определенного выражения
+//? Ниже записи идентичны
+/*
+let promise = new Promise(resolve => resolve('done'));
+let promise2 = Promise.resolve('done2');
+console.log(promise);
+console.log(promise2);
+*/
+
+
+
+
+
+
+
+
+
+//?====================================================================================================
+//? Async/await
+// https://learn.javascript.ru/async-await
+
+//? Движок будет парсить async await в промисы, в нативном js у нас нет такой возможности
+//? То есть функция, к которой был применен async будет промисом, после ее вызова можно будет применить цепочку из then
+//? В самом теле функции можно использовать оператор await для того, чтобы ждать асинхронные операции в теле функции(получается если у нас в теле функции есть несколько Promisов, то мы можем не писать их через then, а просто поставить перед промисов оператор await, и код внутри функции пойдет дальше только после того, как промис будет выполнен)
+/*
+async function f() {
+    await new Promise((resolve) => {
+        setTimeout(() => {
+            console.log('async 2000');
+            resolve();
+        }, 2000)
+    });
+    console.log('after async operation');
+}
+f();
+*/
+
+
+//? У такой конструкции обработка ошибок будет через обычный try..catch, либо же мы может к самой функции, если у нас нет такого обработчки, приенить catch конструкцию, т.к. все равно async преобразует метод в промис
+/*
+async function f() {}
+f().catch((err) => {});
+*/
+
+
+//? Также можно преобразовывать методы классов в асинхронные функции
+/*
+class A{
+    constructor() {}
+    async log() {
+        console.log('some');
+    }
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //!====================================================================================================
 //? Сборщик мусора
@@ -1017,6 +1316,18 @@ console.log(+a);   //22
 //? в отсутствие Symbol.toPrimitive и valueOf, toString обработает все случаи преобразований к примитивам
 
 
+//? Symbol.toStringTag
+//? меняет поведение методов преобразования обьектов к строке, можно указать, какое строковое значение будет возвращено
+/*
+let obj = {
+    [Symbol.toStringTag]: "User",
+}
+alert(obj);   '[object User]'
+*/
+
+
+
+
 
 
 //?====================================================================================================
@@ -1120,6 +1431,30 @@ console.log(first.__proto__ === One.prototype)   //true   __proto__ обьект
 //? One.__proto__.__proto__ === Object.prototype    , потому что прото класса это прототип функции, а прото прототипа функции прототип обьекта
 //? One.prototype.__proto__ === Object.prototype    , потому что прототип это обьект, а прото всех обьектов это Object.prototype
 
+//? Подсказки, напоминания
+/*
+let obj = {
+    age: 22,
+}
+function a() { }
+
+class Class {
+    constructor() {
+    }
+}
+class Class2 extends Class {
+    constructor() {
+    }
+}
+
+console.log(obj.__proto__ === Object.prototype);
+console.log(a.__proto__ === Function.prototype);
+console.log(a.prototype.__proto__ === Object.prototype);
+console.log(Class.__proto__ === Function.prototype);
+console.log(Class.prototype.__proto__ === Object.prototype);
+console.log(Class2.__proto__ === Class);
+console.log(Class2.prototype.__proto__ === Class.prototype);   //Class2.prototype был создан через Class, а значит Class2.prototype.__proto__ ссылается на прототип CLass'a
+*/
 
 
 //? Object.create(null);
@@ -1543,6 +1878,132 @@ class B extends A {
 //? Статический свойства и методы
 // https://learn.javascript.ru/static-properties-methods
 
+//? В классе можно объявить статические свойства и методы, они не будут записаны в "прототип" класса, а будут находится только в данном классе
+/*
+class User {
+    static age = '32';
+    constructor() {
+        this.level = 22;
+    }
+    static sayHi() {
+        console.dir(this);
+    }
+}
+
+let a = new User();
+a.sayHi();   //не сработает, т.к. sayHi есть только у класса, тоже самое и со свойством age
+console.log(User.a);
+*/
+
+//? Статические значения наследуются и также будут доступны в конкректном дочернем классе
+
+
+
+
+
+
+
+
+
+
+//?====================================================================================================
+//? Приватные и защищенные поля
+// https://learn.javascript.ru/private-protected-properties-methods
+
+//? Есть соглашение всеобщее программистов, что защищенные поля, к которым нельзя получать напрямую доступ вне класса начинаются с _
+/*
+class A{
+    _forbidden = true;
+}
+*/
+
+
+//? Приватные поля и методы начинаются с #
+//? Они не наследуются, то есть доступ к ним есть ТОЛЬКО в конкретном классе и все, нет ни в наследуемых классах ни в экзмеплярах обьекта
+//? Единственный способ получения значения вне класса это геттер или функция
+//? Такие поля сначала объявляются сверху перед конструктором
+/*
+class First {
+    #hidden;
+    constructor() {
+        this._name = 'Alex';
+        this.#hidden = 'hidden';
+    }
+    get hidden() {
+        this.#logThis();
+        return this.#hidden;
+    }
+    #logThis = () => {
+        console.log('this');
+    }
+}
+class Second extends First {
+    constructor() {
+        super();
+    }
+}
+let obj1 = new First();
+let obj2 = new Second();
+console.log(obj1);
+console.log(obj2);
+console.log(obj2.hidden);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+//?====================================================================================================
+//? Instanceof
+// https://learn.javascript.ru/instanceof
+
+//? Показыват, наследуется ли наш обьект от определенного класса, он считает классы также в цепочке прототипов, если мы создали массив, то он будет и instanceof Object и instanceof Array
+/*
+let arr = [1, 2, 3];
+alert( arr instanceof Array ); // true
+alert( arr instanceof Object ); // true
+*/
+
+
+
+
+
+
+
+
+
+//?====================================================================================================
+//? Примеси
+// https://learn.javascript.ru/mixins
+
+//? Примесь, это подмешивание в класс методов и свойств из другого обьекта
+//? Получается, мы в прототип класса подмешиваем нужные нам методы, и те же методы можно потом подмешть в другой нужный нам класс, но чтобы он не зависел от первого
+/*
+let sayHiMixin = {
+    sayHi() {
+        alert(`Привет, ${this.name}`);
+    },
+    sayBye() {
+        alert(`Пока, ${this.name}`);
+    }
+};
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+}
+Object.assign(User.prototype, sayHiMixin);
+new User("Вася").sayHi();   //Привет, Вася!
+*/
+
+
 
 
 
@@ -1628,6 +2089,12 @@ console.log(Symbol.keyFor(b));   //undefined, не глобальный симв
 
 
 
+
+
+
+
+
+
 //!====================================================================================================
 //? Работа с примитивами. Почему у примитивов есть методы?
 // https://learn.javascript.ru/primitives-methods
@@ -1645,6 +2112,10 @@ if (a) {
 
 
 //? null/undefined не имеют методов, попытка вызвать свойство приведет к ошибке
+
+
+
+
 
 
 
@@ -1698,6 +2169,11 @@ console.log(isFinite('23fsd'));   //false
 
 
 
+
+
+
+
+
 //!====================================================================================================
 //? String строки
 // https://learn.javascript.ru/string
@@ -1707,6 +2183,11 @@ console.log(isFinite('23fsd'));   //false
 //? строки можно перебирать через for of
 
 //? обращаться к определенном символу можно через [] или через str.charAt(), если не будет значения в первом случае вернется undefined, во втором пустая строка
+
+
+
+
+
 
 
 
@@ -1748,6 +2229,8 @@ console.log(isFinite('23fsd'));   //false
 
 
 
+
+
 //!====================================================================================================
 //? Итерируемые перебираемые обьекты     Symbol.iterator
 // https://learn.javascript.ru/iterable
@@ -1764,6 +2247,9 @@ console.log(isFinite('23fsd'));   //false
 //? Symbol.iterator - функция, которая возвращает обьект с методом next, который возвращает обьект с полями done, value. Каждый раз итератор увеличивается на один и возвращает следующее нужное нам значение, пока верно условие
 
 //? если мы создали класс с методом итерации и потом наследуемся от него, то метод итерации пожно перезаписать
+
+
+
 
 
 
@@ -1894,6 +2380,10 @@ console.log(set);
 
 
 
+
+
+
+
 //!====================================================================================================
 //? WeakMap WeakSet
 // https://learn.javascript.ru/weakmap-weakset
@@ -1921,6 +2411,9 @@ console.log(wMap.has(obj));   //false
 //? WeakSet
 //? может содерждать в себе только обьекты
 //? имеет то же самое поведение, что и WeakMap
+
+
+
 
 
 
@@ -2005,10 +2498,15 @@ console.log(name, age);
 
 
 
+
+
 //!====================================================================================================
 //? Date Дата
 // https://learn.javascript.ru/date
 // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Date
+
+
+
 
 
 
@@ -2048,6 +2546,7 @@ console.log(JSON.stringify(obj));
 
 //? parse - достает обьект из json
 //? функция может принимать 2 параметр, функцию по преобразованию значений
+//? функция выдаст ошибку, если json не корректный, поэтому лучше обрабатывать try..catch
 /**
 let obj = {
     name: 'Dima',
@@ -2087,4 +2586,50 @@ let room = {
     }
 };
 console.log(JSON.stringify(room));
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//!====================================================================================================
+//? Обработка ошибок
+// https://learn.javascript.ru/try-catch
+
+//? try…catch…finally
+//? Try..catch работает синхронно, и если внутри try у нас асинхронный скрипт, то наш трай кэтч не поймает его, т.к. он уже запустит код асинхронный и пойдет дальше
+//? json.parse функция выдаст ошибку, если json не корректный, поэтому лучше обрабатывать try..catch
+
+
+//? Throw Оператор
+//? выкидывает ошибку (error, referenceerror и т.д.)
+
+
+//? Если у нас в блоке try есть return чего-то, то сначала выполнится finally(если в нем есть return, то вернется значение из finally, если нет, то просто отработает скрипт) и вернется значение из блока try
+/*
+function func() {
+    try {return 1;}
+    catch (e) {}
+    finally {return 2;}
+}
+let a = func();
+console.log(a);
+*/
+
+
+//? мы можем обработать ошибку на всем документе вызвав onerror слушатель на window
+/*
+globalThis.addEventListener('error', () => {
+    console.log('ошибка');
+});
+throw new Error('bla');
 */
