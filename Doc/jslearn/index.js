@@ -3690,3 +3690,125 @@ console.log('contentWidth', test.clientWidth - parseFloat(getComputedStyle(test)
 //?================================================================================================================================================
 //? Размеры и прокрутка окна
 // https://learn.javascript.ru/size-and-scroll-window
+
+
+//? documentElement.clientHeight
+//? высота текущего окна без полосы прокрутки
+
+
+//? documentElement.clientWidth
+//? ширина текущего окна без полосы прокрутки
+
+
+//? window.innerWidth/Height
+//? отличаются от вышеперечисленных свойств тем, что включают в себя полосу прокрутки
+
+
+//? documentElement.scrollHeight/scrollWidth
+//? полная высота документа. а этом элементе, для страницы в целом, эти свойства работают не так, как предполагается. В Chrome/Safari/Opera, если нет прокрутки, то documentElement.scrollHeight может быть даже меньше, чем documentElement.clientHeight! С точки зрения элемента это невозможная ситуация. Чтобы надёжно получить полную высоту документа, нам следует взять максимальное из этих свойств:
+/*
+let scrollHeight = Math.max(
+    document.body.scrollHeight, document.documentElement.scrollHeight,
+    document.body.offsetHeight, document.documentElement.offsetHeight,
+    document.body.clientHeight, document.documentElement.clientHeight
+);
+*/
+
+
+//? documentElement.scrollLeft/scrollTop
+//? получение текущей прокрутки. Существует баг, что в safari надо использовать document.body
+
+
+//? window.pageYOffset/pageXOffset
+//? получение текущей прокрутки
+
+
+//? scrollTo, scrollBy, scrollIntoView
+//? Прокрутка документа и элементов. Обычно можно прокручивать элементы меняя им scrollTop/scrollLeft, но также можно использовать эти методы
+//? прокрутка не работает, пока дом не загружен полностью
+
+
+//? Запретить скролл можно с помощью overflow='hidden'
+
+
+//? Примеры
+/*
+console.log('clientHeight', document.documentElement.clientHeight);
+console.log('clientWidth', document.documentElement.clientWidth);
+console.log('innerHeight', window.innerHeight);
+console.log('innerWidth', window.innerWidth);
+console.log('scrollHeight', document.documentElement.scrollHeight);
+console.log('scrollWidth', document.documentElement.scrollWidth);
+console.log('scrollTop', document.documentElement.scrollTop);
+console.log('scrollLeft', document.documentElement.scrollLeft);
+console.log('pageYOffset', window.pageYOffset);
+console.log('pageXOffset', window.pageXOffset);
+*/
+
+
+
+
+
+//?================================================================================================================================================
+//? Координаты
+// https://learn.javascript.ru/coordinates
+
+
+//? element.getBoundingClientRect
+//? метод возвращает координаты элемента относительно окна(экрана), то есть расчет всегда относительно верхнего левого угла экрана идет:
+//? bottom - нижняя граница элемента относительно верха окна(может быть отрицательным, когда элемент выходит за границы)
+//? top - левый верхний угол элемента относительно верха окна
+//? left - левый верхний угол элемента относительно левой части окна
+//? right - правая граница элемента относительно левой части окна
+//? height - высота
+//? width - ширина
+
+//? top/left не всегда равный x/y, если например, задать x/y координаты 200/200, и ширину с высотой -200/-200, то top/left значения будут равны нулям
+
+
+//? elementFromPoint(x, y)
+//? возвращает самый глубоко вложенный элемент в окне по данным координатам
+//? Для координат за пределами окна метод elementFromPoint возвращает null Метод document.elementFromPoint(x,y) работает, только если координаты (x,y) относятся к видимой части содержимого окна. Если любая из координат представляет собой отрицательное число или превышает размеры окна, то возвращается null.
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? События Events
+// https://learn.javascript.ru/introduction-browser-events
+
+
+//? in html
+//? можно подписаться в самом html файле
+
+
+//? element.onClick
+//? можно подписаться вызывав определенное свойство обьекта тега, повторное присвоение обработчика перезапишет его, а чтобы обнулить его таким образом можно передать null
+
+
+//? addEventListener
+//? вешаем обработчик на элемент через этот метод
+//? при объявлении таким образом обработчика, мы можем сколько угодно повесить обработчиков на один и тот же элемент, но чтобы удалить обработчик, нужно точно знать ссылку на функцию, которая является обработчиком
+/*
+bla.addEventListener('click', (e) => {});   //такой обработчик нельзя обнулить
+
+function click(e) {}   //а вот такой вариант сработает
+bla.addEventListener('click', click);
+bla.removeEventListener('click', click);
+*/
+//? принимает 3 параметра: само событие, обработчик, и обьект настроек: (once: если true, тогда обработчик будет автоматически удалён после выполнения, capture: фаза, на которой должен сработать обработчик, passive: если true, то указывает, что обработчик никогда не вызовет preventDefault())
+
+
+//? handler принимает в себя обьект event, который содержит информацию по событию
+
+
+//? получить доступ к элементу можно через this, это будет тот элемент, на котором висит обработчик события
+
+
+//? Обработчики некоторых событий можно назначать только через addEventListener Существуют события, которые нельзя назначить через DOM-свойство, но можно через addEventListener. Например, таково событие DOMContentLoaded, которое срабатывает, когда завершена загрузка и построение DOM документа.
