@@ -8,15 +8,30 @@
 </head>
 
 <body style="height: 2000px; box-sizing: border-box;">
-    <div id="test" class="test_class second_test_class"
-        style="border: 10px solid black; width: 400px; padding: 20px; margin: 50px; overflow-y: scroll; box-sizing: border-box;">
-        <div id="inside" style="padding: 10px; background-color: blue;">
-            <p>вот сюда кликни</p>
+
+    <form name="test">
+        <div class="wrap">
+            <input name="password" type="password" />
         </div>
-        <!-- <span style="width: 100px; height: 100px; background-color: red; display: block;"></span> -->
-        <!-- <span style="width: 100px; height: 100px; background-color: red; display: block;"></span> -->
-        <!-- <span style="width: 100px; height: 100px; background-color: red; display: block;"></span> -->
-    </div>
+        <div class="wrap">
+            <input name="name" type="name" required />
+        </div>
+        <fieldset name="userFields">
+            <legend>info</legend>
+            <input name="login" type="text">
+        </fieldset>
+    </form>
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            alert("DOM готов!");
+        });
+    </script>
+
+
+    <script async defer>
+        alert("Библиотека загружена, встроенный скрипт выполнен");
+    </script> -->
 
     <script src="script.js" type="module"></script>
     <script src="script2.js" type="module"></script>
