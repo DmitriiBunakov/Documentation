@@ -1,3 +1,3 @@
-let a = Symbol.for('id');
-let b = Symbol.for('id');
-console.log(b === a);
+
+let url = new URL('https://jsonplaceholder.typicode.com/todos/1?query=pizda');
+console.log(url.searchParams);
