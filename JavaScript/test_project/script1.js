@@ -1,0 +1,46 @@
+window.a = 1;
+console.log(window.a);
+
+export let c = 3;
+console.log(c);
+
+window.b = 2;
+console.log(window.b);
+
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('');
+console.log('конец первого');
