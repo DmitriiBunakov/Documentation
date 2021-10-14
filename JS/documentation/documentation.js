@@ -1430,7 +1430,7 @@ a == '[object Object]'
 */
 
 
-//? обьекты копируются по ссылке, то есть если переменной присвоить другой обьект, то обе переменные будут ссылать и изменять один и тот же обьект
+//? обьекты копируются по ссылке, то есть если переменной присвоить другой обьект, то обе переменные будут ссылаться и изменять один и тот же обьект
 
 
 
@@ -1472,7 +1472,7 @@ function cloneDeep(newObject, objectToBeCloned) {
 */
 
 
-//? JSON.parse
+//? JSON.parse JSON.stringify/JSON.parse(JSON.stringify)
 /*
 let obj = {
     name: 'Dima',
@@ -1624,7 +1624,7 @@ let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
 
 //? При обращении к свойству обьекта, обьект сначала ищет его внутри себя, а затем в своих прототипах
 
-//? Если мы наследуемся от обьекта, и у родительского обьекта мы поменяем значение свойства, то оно изменится и в дочернем обьекте
+//? Если мы наследуемся от обьекта, и у родительского обьекта мы поменяем значение свойства, то оно изменится и в дочернем обьекте(вернее будет сказать, что дочерний обьект будет ссылаться на свойство в прототипе, а оно, естественно, будет изменено)
 
 
 
@@ -1641,97 +1641,41 @@ let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
 
 
 //? прототип - то, от чего наследуемся
+//? prototype есть только у классов и функций(объявленных через function)
 
 
 //? __proto__
-//? есть у всех обьектов и является это свойство ссылкой на prototype родителя, а также через него можно задавать прототип
-
-
-//? чтобы понять, чему равен __proto__ в конкретном обьекте(классе), надо точно понять с помощью какого конструктора он был создан. Например {} был создан через new Object, значит его прото будет равно Object.prototype, class One например является функцией и был создан через new Function, а значит Function.prototype будет результатом ссылки из прото
-
-
-//? __proto__ ссылается всегда на prototype класса с помощью которого он был создан(в этом prototype как раз есть конструктор, с помощью которого и был создан обьект)
-
+//? есть у всех классов, обьектов и функций(т.к. это тоже обьект) и является это свойство ссылкой на prototype родителя, а также через него можно задавать прототип
 //? у классов также есть __proto__ и ссылается он на Function.prototype, т.к. класс это функция и создан класс был через new Function
 
 
-//? Function.__proto__ === Function.prototype    , т.к. Function класс был создан из Function.prototype.constructor
-//? One.__proto__.constructor === Function.prototype.constructor    , потому что One.proto это Function.prototype
-//? Object.__proto__ === Function.prototype    , т.к. класс Object был создан с помощью Function
-//? Object.prototype   это уже конечная в цепочке прототипов, дальше только null
-//? Object.prototype.__proto__     тут уже будет null, т.к. у прототипа обьекта __proto__ ссылается на null
-//? Object.__proto__.__proto__ === Object.prototype    ,т.к. прото обьекта это Function.prototype, Function.prototype.__proto__ это прототип обьекта
-//? String.prototype.__proto__ === Object.prototype    ,т.к. String.prototype это и есть прототип класса String, а он в свою очередь был создан с помощью Object, а значит String.prototype.__proto__ ссылается на Object.prototype
-//? String.__proto__ === Function.prototype   ,т.к. String это класс, а он создан был через new Function, а значит прототипом является Function.prototype
-//? ChildClass.__proto__ === ParentClass   ,т.к. был создан с помощью родительского конструктора
+//? чтобы понять, чему равен __proto__ в конкретном обьекте(классе), надо точно понять с помощью какого конструктора он был создан. Например {} был создан через new Object, значит его прото будет равно Object.prototype, class One например является функцией и был создан через new Function, а значит Function.prototype будет результатом ссылки из прото
+//? __proto__ ссылается всегда на prototype класса с помощью которого он был создан(в этом prototype как раз есть конструктор, с помощью которого и был создан обьект)
 
 
-/*
-class One {
-    constructor() {
-        this.age = 22;
-    }
-}
-class Two extends One {
-    constructor() {
-        super();
-        this.name = 'Alex';
-    }
 
-    sayHi() {
-        console.log('Hi');
-    }
-}
-let first = new Two();
-console.dir(Two.__proto__ === One);
-*/
-//? first.__proto__ === Two.prototype   ,т.к. прото обьекта является прототипом класса, с помощью которого он был создан
 
-/*
-class One {
-    constructor() {
-        this.age = 22;
-    }
-}
-let first = new One();
-console.log(first.__proto__ === One.prototype)   //true   __proto__ обьектов ссылается на либо на обьект-родитель, либо на prototype класса, с помощью которого он был создан
-*/
-//? One.__proto__.__proto__ === Object.prototype    , потому что прото класса это прототип функции, а прото прототипа функции прототип обьекта
-//? One.prototype.__proto__ === Object.prototype    , потому что прототип это обьект, а прото всех обьектов это Object.prototype
+
+//? class Parent {}
+//? class Child extends Parent{}
+// ? console.log([].__proto__ === Array.prototype);                                                     был создан с помощью Array
+//? console.log({}.__proto__ === Object.prototype);                                                     создан с помощью Object
+//? console.log(Array.__proto__ === Function.prototype);                                                был создан с помощью Function
+//? console.log(String.__proto__ === Function.prototype);                                               был создан с помощью Function
+//? console.log(Function.__proto__ === Function.prototype);                                             был создан с помощью Function
+//? console.log(Object.__proto__ === Function.prototype);                                               был создан с помощью Function
+//? console.log(Object.prototype.__proto__ === null);                                                   прото прототипа обьект null
+//? console.log(Function.prototype.__proto__ === Object.prototype);                                     был создан с помощью Object
+//? console.log(Parent.__proto__ === Function.prototype);                                               был создан с помощью Function
+//? console.log(Child.__proto__ === Parent.prototype.constructor && Child.__proto__ === Parent);        был создан с помощью Parent.constructor
+//? console.log(Child.prototype.__proto__ === Parent.prototype);                                        был создан с помощью Parent
+
+
+
 
 
 //? prototype не равен никаким другим прототипам, он единственный в своем роде!!! То есть он равен только __proto__ которое на него ссылается и все
 //? prototype есть только у классов и функций(объявленных через function)
-
-
-
-
-
-//? Подсказки, напоминания
-/*
-let obj = {
-    age: 22,
-}
-function a() { }
-
-class Class {
-    constructor() {
-    }
-}
-class Class2 extends Class {
-    constructor() {
-    }
-}
-
-console.log(obj.__proto__ === Object.prototype);
-console.log(a.__proto__ === Function.prototype);
-console.log(a.prototype.__proto__ === Object.prototype);
-console.log(Class.__proto__ === Function.prototype);
-console.log(Class.prototype.__proto__ === Object.prototype);
-console.log(Class2.__proto__ === Class);
-console.log(Class2.prototype.__proto__ === Class.prototype);   //Class2.prototype был создан через Class, а значит Class2.prototype.__proto__ ссылается на прототип CLass'a
-*/
-
 
 
 //? Обьект может иметь только один прототип, но большую цепочку
@@ -1959,7 +1903,7 @@ class User {
 let user = new User('dima', 22);
 user.f();   //user
 */
-//? new вызов в конструкторах обязателен!! из за него может теряться контекст!!(проблема для не строгого режима)
+//? new вызов в конструкторах обязателен!! из за него может теряться контекст!!(проблема для не обычного режима кода)
 /*
 new User();
 */
@@ -1998,7 +1942,7 @@ f.bind(3)(6);
 */
 
 
-//? в событиях DOM ссылается на элемент, на котором начинается событие, если функция обычная, если стрелочная, то хуй знает, что там будет
+//? в событиях DOM, this ссылается на элемент, на котором начинается событие, если функция обычная, если стрелочная, то хуй знает, что там будет
 
 
 
@@ -2043,7 +1987,7 @@ function User(age) {
 // https://learn.javascript.ru/class
 
 
-//? Класс - это синтаксический сахар над функцией конструктором
+//? Класс - это синтаксический сахар над функцией конструктором(есть пара нюансов)
 //? Синтаксис класса делает следующее:
 //? Создается функция конструктор с именем класса, а ее вызов будет содержать тело constructor
 //? Все методы класса записываются в прототип этого класса
@@ -2213,6 +2157,7 @@ class A{
 //? Они не наследуются, то есть доступ к ним есть ТОЛЬКО в конкретном классе и все, нет ни в наследуемых классах ни в экзмеплярах обьекта
 //? Единственный способ получения значения вне класса это геттер или функция
 //? Такие поля сначала объявляются сверху перед конструктором
+//? Также получить доступ через ['#name'] нельзя, специальная защита свойств
 /*
 class First {
     #hidden;
@@ -2486,7 +2431,6 @@ console.log(isFinite('23fsd'));   //false
 
 //? for..of работает только с теми типами данных, для которых задан Symbol.iterator!!!
 //? for..of рекомендуется или for обычный
-
 
 //? for in тоже можно, но если наш массив является каким то массивом с допольнительными свойствами и методами, они также будут включены в перебор, в отличии от for of
 
