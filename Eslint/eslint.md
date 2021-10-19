@@ -1,14 +1,19 @@
-https://eslint.org/docs/user-guide/getting-started
+# https://eslint.org/docs/rules/
 
+## Установка
 для добавления линтера ESlint в проект нужно его установить
 npm install eslint --save-dev
 
-затем инициализируем его в проекте
+# затем инициализируем его в проекте
 npx eslint --init
 
 отвечаем на вопросы и затем устанавливаем зависимости, также в vscode включаем расширение(eslint)
 
-добавляем в settings.json настройки для автосохранения
+# установка плагина для импортов
+npm i --save-dev eslint-plugin-import
+
+
+# добавляем в settings.json настройки для автосохранения
 "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
 },
