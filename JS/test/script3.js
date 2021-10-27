@@ -1,13 +1,16 @@
-let obj = {
-    func1: () => {
-        console.log(this);
-    }
-}
-obj.func1();
+debugger
+function a() {
+    var name = 'John Doe';
 
-class A{
-    func1 = () => {
-        console.log(this);
+    function b() {
+        return name;
     }
+    return b;
 }
-new A().func1();
+var c = a();
+
+function bla() {
+    console.log(1);
+}
+bla();
+console.log(c());
