@@ -177,18 +177,21 @@
         }
     };
 
-    function zp(department) {
-        if (Array.isArray(department)) {
-            return department.reduce((acc, item) => acc + item.salary, 0);
-        } else {
-            let sum = 0;
-            for (const key in department) {
-                sum += zp(department[key]);
+    function find(arg) {
+        let res = 0;
+        if (Array.isArray(arg)) {
+            for (let item of arg) {
+                res += item.salary;
             }
-            return sum;
+            return res;
+        } else {
+            Object.keys(arg).forEach(item => {
+                res += find(arg[item]);
+            });
+            return res;
         }
     }
-    let res = zp(company);
+    let res = find(company);
     console.log(res);
 }
 
