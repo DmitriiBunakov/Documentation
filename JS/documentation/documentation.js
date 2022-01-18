@@ -4672,6 +4672,7 @@ node.textContent = 'added text again';
 //? /EventLoop/Событийный цикл/
 // https://learn.javascript.ru/event-loop
 // http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D
+// https://habr.com/ru/company/hh/blog/517594/
 
 
 //? поток выполнения в браузере и node.js основан на событийном цикле
@@ -4715,7 +4716,8 @@ console.log("Welcome to loupe.");
 //? В цикле у нас есть 3 очереди: для рендера страницы, микро и макро задач.
 //? Сначала выполнятся макротаски, затем, если в очереди микро задач будут функции, выполнятся сначала они
 
-//? Сразу после каждой макрозадачи движок исполняет все задачи из очереди микрозадач перед тем, как выполнить следующую макрозадачу или отобразить изменения на странице, или сделать что-то ещё. Все микрозадачи завершаются до обработки каких-либо событий или рендеринга, или перехода к другой макрозадаче.
+//? Сразу после каждой макрозадачи движок исполняет все задачи из очереди микрозадач перед тем, как выполнить следующую макрозадачу или отобразить изменения на странице, или сделать что-то ещё. Все микрозадачи завершаются до обработки каких-либо событий или рендеринга, или перехода к другой макрозадаче. Микрозадачи всегда беруться раньше всего остального из очереди, они имеют приоритет.
+//? После микрозадач идет отрисовка, если она есть. Но это не совсем точно)
 
 //? Если мы хотим запустить функцию асинхронно (после текущего кода), но до отображения изменений и до новых событий, то можем запланировать это через queueMicrotask.
 
@@ -4969,6 +4971,3 @@ controller.abort();
 
 
 
-
-
-https://learn.javascript.ru/data-types
