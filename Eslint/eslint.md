@@ -26,3 +26,7 @@ npm i --save-dev eslint-plugin-import
 
 все, линтер готов, осталось его настроить только, базовую настройку можно для примера посмотреть в https://gitlab.com/cava121/front-z/-/merge_requests/8
 для обнуление какой то настройки, которая идет из базовых, можно передать null или [0]
+
+
+# для работы с typescript нужно добавить пару зависимостей
+npm i -D @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest

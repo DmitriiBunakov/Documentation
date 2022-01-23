@@ -1,38 +1,23 @@
-function getResult(actions) {
-    let isTurn = false;
-    let isEnter = false;
-    let result = 0;
+function getResult(nums, targets) {
+    let result = [];
 
-    for (let index = 0; index < actions.length; index++) {
+    for (let index = 0; index < nums.length; index++) {
 
-        if (actions[index] === 'power') {
+        for (let index2 = 0; index2 < nums.length; index2++) {
+            const value = nums[index] + nums[index2];
+            const indexElement = targets.findIndex(item => item === value);
 
-            if (isTurn) {
-                isTurn = false;
-                isEnter = false;
-            } else {
-                isTurn = true;
-                isEnter = false;
-            }
-        }
+            if (indexElement >= 0) {
+                result.push(value);
+                nums.push(value);
 
-        if (isTurn) {
-
-            if (actions[index] === 'keystrokes') {
-                isEnter = true;
-            }
-        }
-
-        if (isEnter && isTurn) {
-
-            if (actions[index] === 'click' && actions[index + 1] === 'click') {
-                result += 1;
-                index += 1;
+                index = index2 = 0;
             }
         }
     }
+    console.log(result.length);
 
-    return result;
+    return result.length;
 }
 
-console.log(getResult(["power", "keystrokes", "click", "click", "power", "click", "click", "click", "click", 'power', "click", "click"]));
+getResult([5, 7, 5], [12]);
