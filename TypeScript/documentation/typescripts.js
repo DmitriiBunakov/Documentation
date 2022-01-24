@@ -4,6 +4,7 @@
 
 //? CLI
 // https://www.typescriptlang.org/docs/handbook/compiler-options.html
+//? Интерфейс командной строки/Commin line interface
 
 
 //? Установка
@@ -378,4 +379,50 @@ const test = document.querySelector('.test')!;
 */
 
 
-https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Narrowing/Сужение/
+// https://www.typescriptlang.org/docs/handbook/2/narrowing.html
+
+//? В ts можно делать сужение возможных типов при обращении к свойствам и методам
+/*
+function printAll(strs: string | string[] | null) {
+    if (typeof strs === 'object' && strs) {         тут делаем проверку на null, потому что typeof null вернет обьект, признаная ошибка, ts знает о ней
+        for (const s of strs) {
+            console.log(s);
+        }
+    } else if (typeof strs === 'string') {
+    } else {
+    }
+}
+*/
+
+//? Тут ts динамически определит по свойству, к какому типу относится переданный параметр функции
+/*
+interface Circle {
+	kind: 'circle';
+	radius: number;
+}
+interface Square {
+	kind: 'square';
+	sideLength: number;
+}
+type Shape = Circle | Square;
+
+function getArea(shape: Shape) {
+    if (shape.kind === 'circle') {
+        return Math.PI * shape.radius ** 2;
+    }
+
+    return Math.PI * shape.sideLength ** 2;
+}
+*/
+
+//? При сужении можно получить тип never, это значит, что такого типа просто не должно быть
