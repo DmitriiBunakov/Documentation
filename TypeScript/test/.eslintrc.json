@@ -80,7 +80,7 @@
                 "maxEOF": 0
             }
         ],
-        "no-tabs": [1],
+        "no-tabs": [0],
         "no-trailing-spaces": [1],
         "no-whitespace-before-property": [1],
         "nonblock-statement-body-position": [1],
