@@ -7,7 +7,7 @@
       "strict": true,
       "noImplicitReturns": true,
       "noFallthroughCasesInSwitch": true,
-      "sourceMap": true,
+      "sourceMap": false,
       "declaration": false,
       "downlevelIteration": true,
       "experimentalDecorators": true,
@@ -15,7 +15,7 @@
       "importHelpers": true,
       "strictNullChecks": true,
       "target": "ESNext",
-      "module": "es2020",
+      "module": "ESNext",
       "lib": [
         "es2018",
         "dom"
