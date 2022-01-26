@@ -1311,6 +1311,49 @@ promise.then(
 */
 
 
+//? catch обрабатывает выкидываемые ошибки из then или catch выше по коду. Если мы обработали catch и после него идут then цепочи, они будут обрабатываться, т.к. catch ловит ошибку и делает код как бы уже легальным, если мы хотим, чтобы все оставшиеся блоки then не выполнились, то нам нужно вернуть Promise.reject или выкинуть ошибку
+/*
+class Test {
+
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        console.log('init');
+
+        this.functionReturnReject()
+            .catch(() => {
+                console.log('catch');
+                throw new Error();
+            })
+            .then(data => {
+                console.log(data);
+
+                // this.functionAwaitPromise();
+            })
+            .catch(() => {
+                console.log('LAST CATCH');
+            });
+    }
+
+    functionReturnReject(): Promise<string> {
+        return new Promise((resolve, reject) => {
+            console.log('create functionReturnReject');
+
+            setTimeout(() => {
+                console.log('reject functionReturnReject');
+
+                reject('functionReturnReject');
+            });
+        });
+    }
+}
+new Test();
+*/
+
+
+
 
 
 
@@ -1318,7 +1361,7 @@ promise.then(
 //? /Цепочка промисов/
 //https://learn.javascript.ru/promise-chaining
 
-//? в then можно создать новый промис и вернуть его, и получается мы в каждом then можем создать асинхронную функцию, которая будет выполняться последовательно и будут ждать другие
+//? then создает новый промис, если внутри then в колбеке создать новый промис и вернуть его, то следующий then будет ждать его
 //? в примере ниже я создал промис и вызвал resolve через 2 секунды, все это время в then, мой код ждал меня, затем я снова во втором then создал асинхронную функцию и вернул ее из then, и следующий после then выполнится только когда вернется значение из предыдущего
 /*
 console.log('before promise');
@@ -1512,7 +1555,7 @@ console.log(promise2);
 //? /Async/await/
 // https://learn.javascript.ru/async-await
 
-//? Движок будет парсить async await в промисы, в нативном js у нас нет такой возможности
+//? Движок будет парсить async await в промисы
 //? То есть функция, к которой был применен async будет промисом, после ее вызова можно будет применить цепочку из then
 //? В самом теле функции можно использовать оператор await для того, чтобы ждать асинхронные операции в теле функции(получается если у нас в теле функции есть несколько Promisов, то мы можем не писать их через then, а просто поставить перед промисом оператор await, и код внутри функции пойдет дальше только после того, как промис будет выполнен)
 /*
@@ -1546,6 +1589,98 @@ class A{
 }
 */
 
+
+//? async по сути преобразует обычную функцию в асинхронную таким способом, что если внутри асинхронной функции нет await то она просто вызвает как будто как Promise.resolve
+/*
+async function test() {
+}
+
+Promise.resolve()
+    .then(() => {
+            тут можно писать свой код
+    });
+*/
+//? await же добавит неявно then в эту цепочку. В примере ниже получится, что при таком вызове, это преобразуется в Promise.resolve() а await внутри функции будет являться then неявно
+/*
+async function test() {
+    await new Promise(resolve => {
+        setTimeout(() => {
+            resolve('resolved');
+        }, 2000);
+    });
+}
+
+Promise.resolve()
+    тут неявно создается then из await
+    .then(() => {
+            тут можно писать свой код
+    });
+*/
+
+
+//? Ниже можно посмотреть примеры, потыкать что когда выполнится
+/*
+class Test {
+
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        console.log('init');
+
+        this.functionAsyncDontAwait()
+            .then(data => {
+                console.log(data);
+                // this.function1();
+            })
+        // .then(() => {
+        //     console.log('then 2');
+        // })
+            .then(data => {
+                console.log(data);
+                console.log('END');
+            });
+    }
+
+    functionReturnPromise(): Promise<string> {
+        return new Promise(resolve => {
+            console.log('create functionReturnPromise');
+
+            setTimeout(() => {
+                console.log('resolve functionReturnPromise');
+
+                resolve('functionReturnPromise');
+            });
+        });
+    }
+
+    async functionAwaitPromise(): Promise<void> {
+        await new Promise(resolve => {
+            console.log('create functionAwaitPromise');
+
+            setTimeout(() => {
+                console.log('resolve functionAwaitPromise');
+
+                resolve('functionAwaitPromise');
+            }, 2000);
+        });
+    }
+
+    async functionAsyncDontAwait(): Promise<void> {
+        new Promise(resolve => {
+            console.log('create functionAsyncDontAwait');
+
+            setTimeout(() => {
+                console.log('resolve functionAsyncDontAwait');
+
+                resolve('functionAsyncDontAwait');
+            }, 2000);
+        });
+    }
+}
+new Test();
+*/
 
 
 
