@@ -29,4 +29,5 @@ npm i --save-dev eslint-plugin-import
 
 
 # для работы с typescript нужно добавить пару зависимостей
-npm i -D @typescript-eslint/eslint-plugin/@typescript-eslint/parser
+npm i -D @typescript-eslint/eslint-plugin
+npm i -D @typescript-eslint/parser
