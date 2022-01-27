@@ -228,6 +228,9 @@ interface ITest extends IPoint, IPoint2 {
 */
 
 
+//? Два одинаковых интерфейся будут объеденены в один, если нет кофлитов
+
+
 
 
 
@@ -914,4 +917,254 @@ class Test extends TestAbstract {
 //? /Decorators/Декораторы/
 // https://www.typescriptlang.org/docs/handbook/decorators.html
 
-//? Декораторы, это функции высшего порядка, которые применяются к классам и их полям и как то модифицируют их. Включаются они experimentalDecorators в конфиге
+//? Декораторы, это функции высшего порядка, которые применяются к классам и их полям и как то модифицируют их. Включаются они experimentalDecorators в конфиге. Декоратор это функция высшего порядка, которая как то модифицирует поведение функции, класса, свойства
+
+
+//? Декораторы в ts можно применять к классам, методам, свойствам
+
+//? Декоратор класса. Принимает как аргумент сам класс
+/*
+function seal(Constructor: {new (...args: any[]): void}) {
+    Object.seal(Constructor);
+    Object.seal(Constructor.prototype);
+}
+
+@seal
+class Test {
+    public value: string;
+}
+
+Test.prototype.value = '';
+*/
+
+//? Декоратор метода и геттера, сеттера. Принимает класс, имя метода, обьект дескриптор свойства
+/*
+function logStatistics(Constructor: {}, property: string, descriptor: PropertyDescriptor) {
+    console.log(Constructor);
+    console.log(property);
+    console.log(descriptor);
+}
+
+class Test {
+
+    @logStatistics
+    public test(): void {
+        console.log('test');
+    };
+}
+
+console.log(Object.getOwnPropertyDescriptor(Test, 'test'));
+*/
+
+//? Декоратор параметра. Принимает класс, свойство. Может использоваться только для того, чтобы определить, что оно было создано
+/*
+function logStatistics(Constructor: {}, property: string) {
+    console.log(Constructor);
+    console.log(property);
+}
+
+class Test {
+    @logStatistics
+    public test: string = 'test';
+}
+*/
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Namespaces/Пространство имен/
+// https://www.typescriptlang.org/docs/handbook/namespaces.html
+
+//? Как и интерфейся пространства имен объединяются в одно, если нет конфилктов
+
+//? После компиляции namespace преобразуется в самовызывающуюся функцию. Это что то наподобии модуля. Если внутри namespace мы экспортируем сущность, то она в конечном итоге станет просто свойством этого модуля, которое можно получить
+/*
+namespace Test {
+    export const value: string = 'value';
+    export const number: number = 1;
+    const closedValue: boolean = true;
+}
+
+превратится в это
+var Test;
+(function (Test) {
+    Test.value = 'value';
+    Test.number = 1;
+    const closedValue = true;
+})(Test || (Test = {}));
+*/
+
+
+//? При объединении с классом происходит интересная вещь. В класс будет записаны экспортируемые значения из namespace и будут доступны как свойства класса.
+/*
+class Album {
+    label: Album.AlbumLabel;
+}
+namespace Album {
+    export class AlbumLabel {}
+    class Test {}
+}
+console.dir(Album);
+
+после сборки
+"use strict";
+class Album {
+    label;
+}
+(function (Album) {
+    class AlbumLabel {
+    }
+    Album.AlbumLabel = AlbumLabel;
+    class Test {
+    }
+})(Album || (Album = {}));
+console.dir(Album);
+*/
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Enum/Статические члены/Перечисления/
+// https://www.typescriptlang.org/docs/handbook/enums.html
+
+//? Данной конструкции нет в js, это особый тип, в котором каждому значению, которому не было задано свойство присваивается еще и индекс, по которому можно получить значение
+//? принцип работы модуля все тот же. В обьект записываются значения по ключу из enum, и записывается значение индекса, а также в этот же обьект записывается ключ индекс по которому будет доступно значение. Двух сторонняя связка данных как бы. Они неизменяемы в ts, потому что сломается принцип работы перечисления
+/*
+enum Color {
+    up,
+    down,
+    left,
+    right,
+}
+
+
+"use strict";
+var Color;
+(function (Color) {
+    Color[Color["up"] = 0] = "up";
+    Color[Color["down"] = 1] = "down";
+    Color[Color["left"] = 2] = "left";
+    Color[Color["right"] = 3] = "right";
+})(Color || (Color = {}));
+console.log(Color);
+*/
+
+
+//? Если в перечислении задать значения цифр, а оставшимся не задавать ничего, то в перечислении индексы будут рассчитываться от последнего установленного нами значения
+/*
+enum Color {
+    up = 10,
+    down = 20,
+    left,
+    right,
+}
+
+
+"use strict";
+var Color;
+(function (Color) {
+    Color[Color["up"] = 10] = "up";
+    Color[Color["down"] = 20] = "down";
+    Color[Color["left"] = 21] = "left";
+    Color[Color["right"] = 22] = "right";
+})(Color || (Color = {}));
+*/
+//? Но если в перечислении будут сначала цифры как значения, а потом пойдут строки, то мы обязаны все остальные значения проинициилизировать самими, и им не будет добавлен индекс  в виде ключа доступа
+
+
+//? Перечисления могут быть вычисленными динамически. Т.е. его значения будут вычислены во время компиляции
+/*
+enum FileAccess {
+    Read = 1,
+    Write = 2,
+    ReadWrite = Read || Write,
+    G = '123'.length,
+}
+console.log(FileAccess);
+*/
+
+
+//? keyof с перечислением работает не так, как ожидается. Вместо этого используйте комбинацию keyof typeof, который вернет все ключи перечисления
+/*
+enum LogLevel {
+    ERROR,
+    WARN,
+    INFO,
+    DEBUG,
+}
+type TTest = keyof typeof LogLevel          "ERROR" | "WARN" | "INFO" | "DEBUG"
+*/
+
+
+//? Перечисления объявленные через const и затем используемые в коде после компиляции будут не преобразованы в обьект, они хардкодом будут вставлены в код, где их используют. А также к ним можно обращаться по индексно и все, нельзя полностью взять такой enum и вывести в консоль, т.к. его нет после компиляции
+/*
+const enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+function test(a: number) {
+    console.log(`passed value is ${a}`);
+}
+test(Direction.Down | Direction.Left);
+
+"use strict";
+function test(a) {
+    console.log(`passed value is ${a}`);
+}
+test(1 | 2);
+*/
+
+// TODO
+
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Объединение пространст имен/
+// https://www.typescriptlang.org/docs/handbook/declaration-merging.html
+
+//TODO
+
+//? Функции и namespace при объединении преобразуются в одно целое. Все экспортируемые значения из namespace будут доступны как свойства у функции
+/*
+function buildLabel(name: string): string {
+    return buildLabel.prefix + name + buildLabel.suffix;
+}
+namespace buildLabel {
+    export const suffix = '';
+    export const prefix = 'Hello, ';
+}
+
+"use strict";
+function buildLabel(name) {
+    return buildLabel.prefix + name + buildLabel.suffix;
+}
+(function (buildLabel) {
+    buildLabel.suffix = '';
+    buildLabel.prefix = 'Hello, ';
+})(buildLabel || (buildLabel = {}));
+console.log(buildLabel.suffix);
+*/
