@@ -185,7 +185,6 @@
 //? /Dynamic components/Динамические компоненты/
 // https://angular.io/guide/dynamic-component-loader
 // https://angular.io/api/core/ViewContainerRef
-// TODO
 
 //? ViewContainerRef
 //? Динамическое обращение с контентом компонента или директивы
@@ -331,6 +330,19 @@ public onChangeInput(event: Event): void {
 
 
 
+//? /ng-container/
+// https://angular.io/api/core/ng-container
+
+//? Для группировки тэгов, к контейнеру могут быть применимы директивы. Также эта обертка не отображается в доме, аналогия - react.fragment, просто, чтобы сгруппировать тэги
+
+//? Очень часто применяют к контейнеры директиву NgTemplateOutlet, которая вставляет TemplateRef в шаблон
+
+
+
+
+
+
+
 
 
 
@@ -340,7 +352,22 @@ public onChangeInput(event: Event): void {
 //? /Directives/Директивы/
 // https://angular.io/guide/built-in-directives
 
-// TODO
+//? Директива - класс, который добавляет поведение к элементам приложения
+//? В angular 3 типа директив:
+//? 1) компоненты - директивы с шаблоном
+//? 2) директивы атрибутов - они меняют внешний вид или поведение компонента или другой директивы
+//? 3) структурные директивы, они меняют дом
+
+
+//? Самые распространенные директивы: *ngFor, *ngIf, *ngSwitchCase
+
+
+//? В директиве работают некоторые хуки жизненного цикла
+//? 1) ngOnInit
+//? 2) ngDoCheck
+//? 3) ngAfterContentInit
+//? 4) ngAfterContentChecked
+//? 5) ngAfterViewChecked
 
 
 
@@ -348,6 +375,44 @@ public onChangeInput(event: Event): void {
 
 
 
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Decorators/Декораторы/
+
+//? /HostListener/
+//? Объявляет событие dom для прослушивания и предоставляет метод обработчик
+//? можно использовать глобальные события как префикс: document, window, body
+/*
+@HostListener('window:keydown.enter', ['$event'])
+handleKeyDown(event: KeyboardEvent) {
+    this.counter++;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//? /Renderer/
+// https://angular.io/api/core/Renderer2#createelement
+
+//? С этим классом можно манипулировать элементом, менять стили, классы, добавлять тэги, элементы и т.д.
 
 
 
