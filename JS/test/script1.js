@@ -24,43 +24,50 @@
 
 
 
-class Test {
-    ready = new Promise(resolve => {
-        this.resolve = resolve;
-    });
-    resolve;
+// class Test {
+//     ready = new Promise(resolve => {
+//         this.resolve = resolve;
+//     });
+//     resolve;
 
-    constructor() {
-        this.init();
-    }
+//     constructor() {
+//         this.init();
+//     }
 
-    init() {
-        console.log('start');
-        this.load1()
-            .then(() => {
-                console.log('then 1');
-            });
-    }
+//     init() {
+//         console.log('start');
+//         this.load1()
+//             .then(() => {
+//                 console.log('then 1');
+//             });
+//     }
 
-    async load1() {
-        const promise = new Promise(resolve => {
-            console.log('create promise load1');
-            setTimeout(() => {
-                console.log('load1 resolve');
-                resolve();
-            }, 3000);
-        });
-        await promise;
-    }
+//     async load1() {
+//         const promise = new Promise(resolve => {
+//             console.log('create promise load1');
+//             setTimeout(() => {
+//                 console.log('load1 resolve');
+//                 resolve();
+//             }, 3000);
+//         });
+//         await promise;
+//     }
 
-    async load2() {
-        const promise = new Promise(resolve => {
-            console.log('create promise load2');
-            setTimeout(() => {
-                console.log('load2 resolve');
-                resolve();
-            }, 3000);
-        });
-        await promise;
-    }
-}
+//     async load2() {
+//         const promise = new Promise(resolve => {
+//             console.log('create promise load2');
+//             setTimeout(() => {
+//                 console.log('load2 resolve');
+//                 resolve();
+//             }, 3000);
+//         });
+//         await promise;
+//     }
+// }
+
+
+
+const a = void (() => {
+    return 1
+})()
+console.log(a);
