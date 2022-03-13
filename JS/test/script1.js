@@ -65,9 +65,3 @@
 //     }
 // }
 
-
-
-const a = void (() => {
-    return 1
-})()
-console.log(a);
