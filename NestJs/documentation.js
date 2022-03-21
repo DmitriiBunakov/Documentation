@@ -41,6 +41,10 @@ bootstrap();
 //? Очень похожи на angular модули, также нужно импортировать другие модули, чтобы получить функционал, по дефолту все модули инкапсулированы в этом модуле без экспорта их
 
 
+//? ModuleRef
+//? в сущности можно инжектировать ссылку на модуль, откуда доставать можно значения
+
+
 //? /@Global/
 //? делает всех провайдеров модуля глобальными
 
@@ -146,9 +150,12 @@ bootstrap();
 
 //!================================================================================================================================================
 //? /Providers/Провайдеры/
+// https://docs.nestjs.com/fundamentals/custom-providers
+// https://docs.nestjs.com/fundamentals/circular-dependency
 //? Сервис, который делает какую то логику, обращается к базе данных, и т.д.
 
 //? сервисы нужно объявлять в модуле в providers
+//? все сервисы очень похожи на братьев в Anguler
 
 
 //? Injectable
@@ -166,3 +173,187 @@ Scope.Request
 /*
 Scope.Transient
 */
+
+
+
+//? Можно делать асинхронные провайдеры, приложение не будет запущено, пока не отработают асинхронные провайдеры
+/*
+ provide: 'test',
+useFactory: async () => {
+    await new Promise(resolve => {
+        setTimeout(() => {
+            console.log(1);
+            resolve(true);
+        }, 5000);
+    });
+},
+*/
+
+
+
+//? Чтобы разрешить круговую зависимость, можно использовать forwardRef, либо ссылку на модуль ModuleRef
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /MiddleWare/
+// https://docs.nestjs.com/middleware
+//? Классы, который являются промежуточными обработчиками между клиентом и контролером
+
+//? реализует интерфейс NestMiddleware, и вызывается функция next, если все хорошо, и обработка перейдет к следующему промежуточному обработчику
+//? можно использовать асинхрощину, за нас все сделает nest
+
+
+//? они объявляются в модуле, он должен реализовать интерфейс NestModule, куда передаются обработчики, а затем указываются пути, к которым будут применены они, либо же наоборот - исключены
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Filters exception/Фильтры исключений/
+// https://docs.nestjs.com/exception-filters
+//? Все исключения обрабатываются на глобальном уровне, все, что не отработало, будет поймано тут и будет выброшен ответ ошибки на неверное действие
+
+//? Данная сущность перехватывает ошибки и как то можно обработать их самих, изменить логику и т.д.
+
+
+//? Ниже мы ловим любую ошибку и отвечаем 200 ответом
+//? useGlobalFilters
+//? UseFilters
+/*
+@Catch()
+export class Filter implements ExceptionFilter {
+    public async catch(exception: any, host: ArgumentsHost) {
+        return host.switchToHttp()
+            .getResponse<Response>()
+            .status(200)
+            .send({
+                statusCode: 200,
+                message: ['TEST'],
+            })
+            .end();
+    }
+}
+
+@UseFilters(Filter)
+<CONTROLLER>
+*/
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Pipes/
+// https://docs.nestjs.com/pipes
+//? Сущности, которые преобразуют данные, принимает значение и метаданные
+
+
+//? Можно применить через UsePipes
+//? передать в Query, Param декораторы
+//? useGlobalPipes
+/*
+@Injectable()
+export class Pipe implements PipeTransform {
+    public transform(value: any, metadata: ArgumentMetadata) {
+        console.log('value', value);
+        console.log('metadata', metadata.data);
+        console.log('metadata', metadata.metatype);
+        console.log('metadata', metadata.type);
+    }
+}
+
+@UsePipes(Pipe)
+<CONTROLLER>
+*/
+
+
+//? Можно предоставить дефолтные значения в пайп, вызвав перед ним дефолтный пайп, который принимает значение и возвращает его
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Guards/
+// https://docs.nestjs.com/guards#authorization-guard
+//? Они определяют, будет ли данный запрос обрабатываться обработчиком маршрута или нет, в зависимости от определенных условий (таких как разрешения, роли, ACL и т. д.), присутствующих во время выполнения.
+
+
+//? useGlobalGuards
+//? UseGuards
+/*
+@Injectable()
+export class AuthGuard implements CanActivate {
+    public canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+        console.log(context);
+        console.log(context.getHandler()());
+        return true;
+    }
+}
+
+@UseGuards()
+<CONTROLLER>
+*/
+
+
+
+
+
+
+
+
+
+
+//!================================================================================================================================================
+//? /Interceptors/
+// https://docs.nestjs.com/interceptors
+//? Перехватчики вызываются до и после обработки контроллера
+
+//? UseInterceptor
+/*
+@Injectable()
+export class Interceptor implements NestInterceptor {
+    public intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
+        console.log('intercept');
+
+        return next
+            .handle()
+            .pipe(
+                tap(data => {
+                    console.log(data);
+                    console.log('after');
+                }),
+            );
+    }
+}
+
+@UseInterceptor
+<METHOD>
+*/
+
+
+https://docs.nestjs.com/fundamentals/module-ref
