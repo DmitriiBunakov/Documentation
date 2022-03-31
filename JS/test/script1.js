@@ -66,8 +66,43 @@
 // }
 
 
+// function uniq(strings) {
+//     return Array.from(new Set(strings));
+// }
 
-const a = void (() => {
-    return 1
-})()
-console.log(a);
+// function toLowerCase(strings) {
+//     return strings.map(item => item.toLowerCase());
+// }
+
+// function add1(strings) {
+//     return strings.map(item => item + 1);
+// }
+
+// const array = [
+//     'TEST',
+//     'TEST',
+//     'Value',
+//     'VAlUe',
+//     'UnIq',
+//     'Zero',
+//     'zERO',
+// ]
+
+// function compose(...functions) {
+//     return (value) => {
+//         return functions.reduceRight((prev, curr) => typeof prev === 'function' ? curr(prev(value)) : curr(prev))
+//     }
+// }
+
+// const composed = compose(
+//     add1,
+//     uniq,
+//     toLowerCase
+// )(array);
+
+// console.log(composed);
+
+
+
+const test = new Test();
+console.log(test);
