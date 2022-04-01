@@ -65,6 +65,7 @@
 //     }
 // }
 
+<<<<<<< HEAD
 
 // function uniq(strings) {
 //     return Array.from(new Set(strings));
@@ -110,3 +111,5 @@ let worker = function() {
     let value = 20;
 };
 worker();
+=======
+>>>>>>> e008cbc0bfc1879b792148e2911c21646f09ec60
