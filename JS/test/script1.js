@@ -104,5 +104,9 @@
 
 
 
-const test = new Test();
-console.log(test);
+var value = 10;
+let worker = function() {
+    console.log(value);
+    let value = 20;
+};
+worker();
