@@ -41,6 +41,13 @@
 // https://medium.com/@overthesanity/zone-js-%D0%BE%D1%82-%D0%B0-%D0%B4%D0%BE-%D1%8F-fdb995917968
 // https://www.youtube.com/watch?v=2cV4i-g6Oxc&ab_channel=Angular-%D0%BC%D0%B8%D1%82%D0%B0%D0%BF%D1%8B%D0%B8%D1%81%D0%BE%D0%B1%D1%8B%D1%82%D0%B8%D1%8F
 // https://habr.com/ru/company/infopulse/blog/358860/
+// https://blog.thoughtram.io/angular/2016/02/01/zones-in-angular-2.html
+// https://blog.thoughtram.io/angular/2016/02/22/angular-2-change-detection-explained.html
+
+
+//? NgZone под капотом создает контексты выполнения, следит за тем, когда завершилась та или иная асинхронная операция и вызывает методы обнаружения изменений.
+
+
 
 //? Обнаружение изменений работает следующим образом
 //? eсли у компонента default, то запуск цикла будет на любую асинхронную операцию, события, изменение локальной переменной, и вниз по дереву будет запущен цикл
