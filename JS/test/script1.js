@@ -104,9 +104,7 @@
 
 
 
-var value = 10;
-let worker = function() {
-    console.log(value);
-    let value = 20;
-};
-worker();
+setTimeout(() => {
+    console.log('timer');
+    while (true);
+}, 5000)
