@@ -690,5 +690,15 @@ fromEvent(document, 'click')
 
 
 
+//? throwError
+//? выбрасывает ошибку дальше по коду
+/*
+throwError(() => error);
+*/
+
+
+
+
+
 //? retry
 //? попробовать еще раз столько то раз
