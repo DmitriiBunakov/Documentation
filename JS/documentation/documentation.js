@@ -1697,6 +1697,7 @@ new Test();
 // https://learn.javascript.ru/garbage-collection
 // https://tproger.ru/translations/upravlenie-pamjatju-v-javascript/
 // https://developer.mozilla.org/ru/docs/Web/JavaScript/Memory_Management
+// https://habr.com/ru/post/550534/
 // https://www.youtube.com/watch?v=z9YG9XBwCKo
 
 //? Жизненный цикл памяти разбит на 3 этапа:
