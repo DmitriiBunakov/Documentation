@@ -10,7 +10,7 @@
 //             if (indexElement >= 0) {
 //                 result.push(value);
 //                 nums.push(value);
-
+ 
 //                 index = index2 = 0;
 //             }
 //         }
@@ -189,39 +189,38 @@
 
 
 // throttle timer
-function log(a) {
-    console.log(a);
-}
+// function log(a) {
+//     console.log(a);
+// }
 
-function throttle(func, ms) {
-    let canCall = true;
-    let timerId;
+// function throttle(func, ms) {
+//     let canCall = true;
+//     let lastCallTimerId;
+//     let timerId;
 
-    return (...args) => {
-        if (canCall) {
-            canCall = false;
-            func(...args);
-        } else {
-            clearTimeout(timerId);
+//     return (...args) => {
+//         if (canCall) {
+//             clearTimeout(timerId);
+//             canCall = false;
+//             lastCallTimerId = setTimeout(() => canCall = true, ms);
+//             func(...args);
+//         } else {
+//             clearTimeout(timerId);
 
-            timerId = setTimeout(() => {
-                canCall = false;
-                func(...args);
-            }, ms);
-        }
+//             timerId = setTimeout(() => {
+//                 clearTimeout(lastCallTimerId);
+//                 lastCallTimerId = setTimeout(() => canCall = true, ms);
+//                 func(...args);
+//             }, ms);
+//         }
+//     }
+// }
 
-        setTimeout(() => {
-            canCall = true;
-            clearTimeout(timerId);
-        }, ms);
-    }
-}
+// let throttled = throttle(log, 1000);
 
-let throttled = throttle(log, 1000);
+// throttled(1);
+// throttled(2);
 
-throttled(1);
-throttled(2);
-
-setTimeout( () => throttled(3), 100);
-setTimeout( () => throttled(4), 1100);
-setTimeout( () => throttled(5), 1500);
+// setTimeout(() => throttled(3), 100);
+// setTimeout(() => throttled(4), 1100);
+// setTimeout(() => throttled(5), 1500);
