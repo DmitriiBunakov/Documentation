@@ -224,3 +224,84 @@
 // setTimeout(() => throttled(3), 100);
 // setTimeout(() => throttled(4), 1100);
 // setTimeout(() => throttled(5), 1500);
+
+
+
+
+
+
+
+// throttle date 1
+// function log(a) {
+//     console.log(a);
+// }
+
+// function throttle(callback, ms) {
+//     let lastCall;
+//     let timerId;
+
+//     return function(...args) {
+//         const now = Date.now();
+
+//         if (lastCall === undefined || now - lastCall >= ms) {
+//             clearTimeout(timerId);
+//             callback(...args);
+//             lastCall = now;
+//             return;
+//         }
+
+//         clearTimeout(timerId);
+
+//         timerId = setTimeout(() => {
+//             lastCall = now;
+//             callback(...args);
+//         }, ms);
+//     }
+// }
+
+// let throttled = throttle(log, 1000);
+
+// throttled(1);
+// throttled(2);
+
+// setTimeout(() => throttled(3), 100);
+// setTimeout(() => throttled(4), 1100);
+// setTimeout(() => throttled(5), 1500);
+
+
+
+
+
+
+// throttle date 2
+// function log(a) {
+//     console.log(a);
+// }
+
+// function throttle(callback, ms) {
+//     let lastCall;
+//     let timerId;
+
+//     return function inside(...args) {
+//         const now = Date.now();
+
+//         if (lastCall === undefined || now - lastCall >= ms) {
+//             clearTimeout(timerId);
+//             callback(...args);
+//             lastCall = now;
+//             return;
+//         }
+
+//         clearTimeout(timerId);
+//         timerId = setTimeout(inside, ms, ...args);
+//     }
+// }
+
+// let throttled = throttle(log, 1000);
+
+// throttled(1);
+// throttled(2);
+
+// setTimeout(() => throttled(3), 100);
+// setTimeout(() => throttled(4), 1100);
+// setTimeout(() => throttled(5), 1500);
