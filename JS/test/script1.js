@@ -104,7 +104,124 @@
 
 
 
-setTimeout(() => {
-    console.log('timer');
-    while (true);
-}, 5000)
+
+
+
+
+
+//debounce timer
+// function debounce(func, ms) {
+//     let timerEnded = true;
+
+//     return function(...args) {
+//         if (timerEnded) {
+//             timerEnded = false;
+//             setTimeout(() => timerEnded = true, ms);
+//             func(...args);
+//         }
+//     }
+// }
+
+// function log(a) {
+//     console.log(a);
+// }
+
+// let debounced = debounce(log, 1000);
+
+// debounced(1);
+// debounced(2);
+
+// setTimeout(() => {
+//     debounced(3);
+// }, 500);
+
+// setTimeout(() => {
+//     debounced(4);
+// }, 1000);
+
+// debounced(5);
+
+
+
+
+
+// debounce date
+// function debounce(func, ms) {
+//     let lastCall;
+
+//     return function(...args) {
+//         const call = Date.now();
+
+//         if (lastCall === undefined || call >= lastCall + ms) {
+//             lastCall = call;
+//             func(...args);
+//         }
+//     }
+// }
+
+// function log(a) {
+//     console.log(a);
+// }
+
+// let debounced = debounce(log, 1000);
+
+// debounced(1);
+// debounced(2);
+
+// setTimeout(() => {
+//     debounced(3);
+// }, 500);
+
+// setTimeout(() => {
+//     debounced(4);
+// }, 1000);
+
+// debounced(5);
+
+
+
+
+
+
+
+
+
+
+
+// throttle timer
+function log(a) {
+    console.log(a);
+}
+
+function throttle(func, ms) {
+    let canCall = true;
+    let timerId;
+
+    return (...args) => {
+        if (canCall) {
+            canCall = false;
+            func(...args);
+        } else {
+            clearTimeout(timerId);
+
+            timerId = setTimeout(() => {
+                canCall = false;
+                func(...args);
+            }, ms);
+        }
+
+        setTimeout(() => {
+            canCall = true;
+            clearTimeout(timerId);
+        }, ms);
+    }
+}
+
+let throttled = throttle(log, 1000);
+
+throttled(1);
+throttled(2);
+
+setTimeout( () => throttled(3), 100);
+setTimeout( () => throttled(4), 1100);
+setTimeout( () => throttled(5), 1500);
