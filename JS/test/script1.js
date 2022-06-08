@@ -237,25 +237,31 @@
 // }
 
 // function throttle(callback, ms) {
-//     let lastCall;
-//     let timerId;
+//     let canCall = true;
+//     let lastCallTimerId;
+//     let wasCallWhileAwait = false;
+//     let lastArgs;
 
-//     return function(...args) {
-//         const now = Date.now();
+//     return function inside(...args) {
+//         lastArgs = args;
 
-//         if (lastCall === undefined || now - lastCall >= ms) {
-//             clearTimeout(timerId);
+//         if (canCall) {
 //             callback(...args);
-//             lastCall = now;
+//             canCall = false;
+//             clearTimeout(lastCallTimerId);
+
+//             lastCallTimerId = setTimeout(() => {
+//                 canCall = true;
+
+//                 if (wasCallWhileAwait) {
+//                     wasCallWhileAwait = false;
+//                     inside(...lastArgs);
+//                 }
+//             }, ms);
 //             return;
 //         }
 
-//         clearTimeout(timerId);
-
-//         timerId = setTimeout(() => {
-//             lastCall = now;
-//             callback(...args);
-//         }, ms);
+//         wasCallWhileAwait = true;
 //     }
 // }
 
@@ -305,3 +311,66 @@
 // setTimeout(() => throttled(3), 100);
 // setTimeout(() => throttled(4), 1100);
 // setTimeout(() => throttled(5), 1500);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function f(a) {
+    console.log(a);
+}
+
+function throttle(callback, ms) {
+    let canCall = true;
+    let lastCallTimerId;
+    let wasCallWhileAwait = false;
+    let lastArgs;
+
+    return function inside(...args) {
+        lastArgs = args;
+
+        if (canCall) {
+            callback(...args);
+            canCall = false;
+            clearTimeout(lastCallTimerId);
+
+            lastCallTimerId = setTimeout(() => {
+                canCall = true;
+
+                if (wasCallWhileAwait) {
+                    wasCallWhileAwait = false;
+                    inside(...lastArgs);
+                }
+            }, ms);
+            return;
+        }
+
+        wasCallWhileAwait = true;
+    }
+}
+
+let f1000 = throttle(f, 1000);
+
+f1000(1);
+f1000(2);
+
+// setTimeout(() => f1000(3), 100);
+// setTimeout(() => f1000(4), 1100);
+// setTimeout(() => f1000(5), 1500);
