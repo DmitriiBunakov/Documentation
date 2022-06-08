@@ -193,75 +193,31 @@
 //     console.log(a);
 // }
 
-// function throttle(func, ms) {
-//     let canCall = true;
-//     let lastCallTimerId;
-//     let timerId;
-
-//     return (...args) => {
-//         if (canCall) {
-//             clearTimeout(timerId);
-//             canCall = false;
-//             lastCallTimerId = setTimeout(() => canCall = true, ms);
-//             func(...args);
-//         } else {
-//             clearTimeout(timerId);
-
-//             timerId = setTimeout(() => {
-//                 clearTimeout(lastCallTimerId);
-//                 lastCallTimerId = setTimeout(() => canCall = true, ms);
-//                 func(...args);
-//             }, ms);
-//         }
-//     }
-// }
-
-// let throttled = throttle(log, 1000);
-
-// throttled(1);
-// throttled(2);
-
-// setTimeout(() => throttled(3), 100);
-// setTimeout(() => throttled(4), 1100);
-// setTimeout(() => throttled(5), 1500);
-
-
-
-
-
-
-
-// throttle date 1
-// function log(a) {
-//     console.log(a);
-// }
-
 // function throttle(callback, ms) {
 //     let canCall = true;
+//     let wasCallOnPending = false;
 //     let lastCallTimerId;
-//     let wasCallWhileAwait = false;
 //     let lastArgs;
 
 //     return function inside(...args) {
 //         lastArgs = args;
 
 //         if (canCall) {
-//             callback(...args);
 //             canCall = false;
+//             callback(...args);
 //             clearTimeout(lastCallTimerId);
 
 //             lastCallTimerId = setTimeout(() => {
 //                 canCall = true;
 
-//                 if (wasCallWhileAwait) {
-//                     wasCallWhileAwait = false;
+//                 if (wasCallOnPending) {
+//                     wasCallOnPending = false;
 //                     inside(...lastArgs);
 //                 }
 //             }, ms);
-//             return;
+//         } else {
+//             wasCallOnPending = true;
 //         }
-
-//         wasCallWhileAwait = true;
 //     }
 // }
 
@@ -273,6 +229,10 @@
 // setTimeout(() => throttled(3), 100);
 // setTimeout(() => throttled(4), 1100);
 // setTimeout(() => throttled(5), 1500);
+
+
+
+
 
 
 
@@ -284,26 +244,6 @@
 //     console.log(a);
 // }
 
-// function throttle(callback, ms) {
-//     let lastCall;
-//     let timerId;
-
-//     return function inside(...args) {
-//         const now = Date.now();
-
-//         if (lastCall === undefined || now - lastCall >= ms) {
-//             clearTimeout(timerId);
-//             callback(...args);
-//             lastCall = now;
-//             return;
-//         }
-
-//         clearTimeout(timerId);
-//         timerId = setTimeout(inside, ms, ...args);
-//     }
-// }
-
-// let throttled = throttle(log, 1000);
 
 // throttled(1);
 // throttled(2);
@@ -318,59 +258,3 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function f(a) {
-    console.log(a);
-}
-
-function throttle(callback, ms) {
-    let canCall = true;
-    let lastCallTimerId;
-    let wasCallWhileAwait = false;
-    let lastArgs;
-
-    return function inside(...args) {
-        lastArgs = args;
-
-        if (canCall) {
-            callback(...args);
-            canCall = false;
-            clearTimeout(lastCallTimerId);
-
-            lastCallTimerId = setTimeout(() => {
-                canCall = true;
-
-                if (wasCallWhileAwait) {
-                    wasCallWhileAwait = false;
-                    inside(...lastArgs);
-                }
-            }, ms);
-            return;
-        }
-
-        wasCallWhileAwait = true;
-    }
-}
-
-let f1000 = throttle(f, 1000);
-
-f1000(1);
-f1000(2);
-
-// setTimeout(() => f1000(3), 100);
-// setTimeout(() => f1000(4), 1100);
-// setTimeout(() => f1000(5), 1500);
