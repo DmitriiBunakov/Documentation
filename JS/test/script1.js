@@ -390,9 +390,19 @@ class LinkedList {
     }
 
     #createListFromIterable(iterable) {
+        let previousElement;
+
         for (const iterator of iterable) {
             const newNode = new LinkedNode(iterator);
+
+            if (previousElement) {
+                previousElement.next = previousElement = newNode;
+            } else {
+                this.head = previousElement = newNode;
+            }
         }
+
+        this.tail = previousElement;
     }
 }
 
