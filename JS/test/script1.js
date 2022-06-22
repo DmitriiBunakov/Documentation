@@ -228,3 +228,195 @@
 // setTimeout(() => throttled(4), 1100);
 // setTimeout(() => throttled(5), 1500);
 
+
+
+
+
+
+
+
+
+
+
+class LinkedNode {
+    value;
+    next;
+
+    constructor(value, next = null) {
+        this.value = value;
+        this.next = next;
+    }
+}
+
+class LinkedList {
+    head = null;
+    tail = null;
+
+    constructor(iterable) {
+        if (iterable && Symbol.iterator in iterable) {
+            this.#createListFromIterable(iterable);
+        }
+    }
+
+    prepend(data) {
+        if (!this.head) {
+            const element = new LinkedNode(data);
+            this.head = this.tail = element;
+            return element;
+        }
+
+        const newNode = new LinkedNode(data, this.head);
+        this.head = newNode;
+    }
+
+    append(data) {
+        if (!this.tail) {
+            const element = new LinkedNode(data);
+            this.head = this.tail = element;
+            return element;
+        }
+
+        let penultimate = this.head;
+        while (penultimate.next) {
+            penultimate = penultimate.next;
+        }
+
+        const newNode = new LinkedNode(data);
+        this.tail = penultimate.next = newNode;
+        return newNode;
+    }
+
+    find(data) {
+        let findedNode;
+        let element = this.head;
+
+        while (element && (element.value || element.next)) {
+            if (element.value === data) {
+                findedNode = element;
+                return findedNode;
+            }
+
+            element = element.next;
+        }
+
+        return null;
+    }
+
+    remove(data) {
+        let findedNode;
+        let previousNode = null;
+        let element = this.head;
+
+        while (element && (element.value || element.next)) {
+            if (element.value === data) {
+                findedNode = element;
+                break;
+            } else {
+                previousNode = element;
+            }
+
+            element = element.next;
+        }
+
+        return this.#removeConditionsHandler(findedNode, previousNode);
+    }
+
+    contains(data) {
+        return !!this.find(data);
+    }
+
+    removeLast() {
+        let previousNode;
+        let findedNode;
+        let element = this.head;
+
+        while(element && (element.next || element.value)) {
+            if (element === this.tail) {
+                findedNode = element;
+                break;
+            } else {
+                previousNode = element;
+            }
+
+            element = element.next;
+        }
+
+        return this.#removeConditionsHandler(findedNode, previousNode);
+    }
+
+    removeFirst() {
+        return this.#removeConditionsHandler(this.head, null);
+    }
+
+    toArray() {
+        const array = [];
+        let element = this.head;
+
+        while (element && (element.next || element.value)) {
+            array.push(element.value);
+            element = element.next;
+        }
+
+        return array;
+    }
+
+    #removeConditionsHandler(findedNode, previousNode) {
+        if (findedNode) {
+            const nextElement = findedNode.next;
+
+            if (previousNode && nextElement) {
+                previousNode.next = nextElement;
+            }
+
+            if (previousNode && !nextElement) {
+                previousNode.next = nextElement;
+                this.tail = previousNode;
+            }
+
+            if (nextElement && !previousNode) {
+                this.head = nextElement;
+            }
+
+            if (!previousNode && !nextElement) {
+                this.head = this.tail = null;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    #createListFromIterable(iterable) {
+        let previousElement;
+
+        for (const iterator of iterable) {
+            const newNode = new LinkedNode(iterator);
+
+            if (previousElement) {
+                previousElement.next = previousElement = newNode;
+            } else {
+                this.head = previousElement = newNode;
+            }
+        }
+
+        this.tail = previousElement;
+    }
+}
+
+const linkedList = new LinkedList([1, 2, 3, 4, 5]);
+
+
+
+
+
+
+
+let element = linkedList.head;
+while (element && (element.next || element.value)) {
+    console.log(element.value, element);
+    element = element.next;
+};
+
+console.log('HEAD', linkedList.head);
+console.log('TAIL', linkedList.tail);
