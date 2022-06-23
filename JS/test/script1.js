@@ -240,185 +240,228 @@
 
 
 
-class LinkedNode {
-    value;
-    next;
+// class LinkedNode {
+//     value;
+//     next;
 
-    constructor(value, next = null) {
-        this.value = value;
-        this.next = next;
-    }
-}
+//     constructor(value, next = null) {
+//         this.value = value;
+//         this.next = next;
+//     }
+// }
 
-class LinkedList {
-    head = null;
-    tail = null;
+// class LinkedList {
+//     head = null;
+//     tail = null;
 
-    constructor(iterable) {
-        if (iterable && Symbol.iterator in iterable) {
-            this.#createListFromIterable(iterable);
-        }
-    }
+//     constructor(iterable) {
+//         if (iterable && Symbol.iterator in iterable) {
+//             this.#createListFromIterable(iterable);
+//         }
+//     }
 
-    prepend(data) {
-        if (!this.head) {
-            const element = new LinkedNode(data);
-            this.head = this.tail = element;
-            return element;
-        }
+//     prepend(data) {
+//         if (!this.head) {
+//             const element = new LinkedNode(data);
+//             this.head = this.tail = element;
+//             return element;
+//         }
 
-        const newNode = new LinkedNode(data, this.head);
-        this.head = newNode;
-    }
+//         const newNode = new LinkedNode(data, this.head);
+//         this.head = newNode;
+//     }
 
-    append(data) {
-        if (!this.tail) {
-            const element = new LinkedNode(data);
-            this.head = this.tail = element;
-            return element;
-        }
+//     append(data) {
+//         if (!this.tail) {
+//             const element = new LinkedNode(data);
+//             this.head = this.tail = element;
+//             return element;
+//         }
 
-        let penultimate = this.head;
-        while (penultimate.next) {
-            penultimate = penultimate.next;
-        }
+//         let penultimate = this.head;
+//         while (penultimate.next) {
+//             penultimate = penultimate.next;
+//         }
 
-        const newNode = new LinkedNode(data);
-        this.tail = penultimate.next = newNode;
-        return newNode;
-    }
+//         const newNode = new LinkedNode(data);
+//         this.tail = penultimate.next = newNode;
+//         return newNode;
+//     }
 
-    find(data) {
-        let findedNode;
-        let element = this.head;
+//     find(data) {
+//         let findedNode;
+//         let element = this.head;
 
-        while (element && (element.value || element.next)) {
-            if (element.value === data) {
-                findedNode = element;
-                return findedNode;
-            }
+//         while (element && (element.value || element.next)) {
+//             if (element.value === data) {
+//                 findedNode = element;
+//                 return findedNode;
+//             }
 
-            element = element.next;
-        }
+//             element = element.next;
+//         }
 
-        return null;
-    }
+//         return null;
+//     }
 
-    remove(data) {
-        let findedNode;
-        let previousNode = null;
-        let element = this.head;
+//     remove(data) {
+//         let findedNode;
+//         let previousNode = null;
+//         let element = this.head;
 
-        while (element && (element.value || element.next)) {
-            if (element.value === data) {
-                findedNode = element;
-                break;
-            } else {
-                previousNode = element;
-            }
+//         while (element && (element.value || element.next)) {
+//             if (element.value === data) {
+//                 findedNode = element;
+//                 break;
+//             } else {
+//                 previousNode = element;
+//             }
 
-            element = element.next;
-        }
+//             element = element.next;
+//         }
 
-        return this.#removeConditionsHandler(findedNode, previousNode);
-    }
+//         return this.#removeConditionsHandler(findedNode, previousNode);
+//     }
 
-    contains(data) {
-        return !!this.find(data);
-    }
+//     contains(data) {
+//         return !!this.find(data);
+//     }
 
-    removeLast() {
-        let previousNode;
-        let findedNode;
-        let element = this.head;
+//     removeLast() {
+//         let previousNode;
+//         let findedNode;
+//         let element = this.head;
 
-        while(element && (element.next || element.value)) {
-            if (element === this.tail) {
-                findedNode = element;
-                break;
-            } else {
-                previousNode = element;
-            }
+//         while(element && (element.next || element.value)) {
+//             if (element === this.tail) {
+//                 findedNode = element;
+//                 break;
+//             } else {
+//                 previousNode = element;
+//             }
 
-            element = element.next;
-        }
+//             element = element.next;
+//         }
 
-        return this.#removeConditionsHandler(findedNode, previousNode);
-    }
+//         return this.#removeConditionsHandler(findedNode, previousNode);
+//     }
 
-    removeFirst() {
-        return this.#removeConditionsHandler(this.head, null);
-    }
+//     removeFirst() {
+//         return this.#removeConditionsHandler(this.head, null);
+//     }
 
-    toArray() {
-        const array = [];
-        let element = this.head;
+//     toArray() {
+//         const array = [];
+//         let element = this.head;
 
-        while (element && (element.next || element.value)) {
-            array.push(element.value);
-            element = element.next;
-        }
+//         while (element && (element.next || element.value)) {
+//             array.push(element.value);
+//             element = element.next;
+//         }
 
-        return array;
-    }
+//         return array;
+//     }
 
-    #removeConditionsHandler(findedNode, previousNode) {
-        if (findedNode) {
-            const nextElement = findedNode.next;
+//     #removeConditionsHandler(findedNode, previousNode) {
+//         if (findedNode) {
+//             const nextElement = findedNode.next;
 
-            if (previousNode && nextElement) {
-                previousNode.next = nextElement;
-            }
+//             if (previousNode && nextElement) {
+//                 previousNode.next = nextElement;
+//             }
 
-            if (previousNode && !nextElement) {
-                previousNode.next = nextElement;
-                this.tail = previousNode;
-            }
+//             if (previousNode && !nextElement) {
+//                 previousNode.next = nextElement;
+//                 this.tail = previousNode;
+//             }
 
-            if (nextElement && !previousNode) {
-                this.head = nextElement;
-            }
+//             if (nextElement && !previousNode) {
+//                 this.head = nextElement;
+//             }
 
-            if (!previousNode && !nextElement) {
-                this.head = this.tail = null;
-            }
+//             if (!previousNode && !nextElement) {
+//                 this.head = this.tail = null;
+//             }
 
-            return true;
-        } else {
-            return false;
-        }
-    }
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     }
 
-    #createListFromIterable(iterable) {
-        let previousElement;
+//     #createListFromIterable(iterable) {
+//         let previousElement;
 
-        for (const iterator of iterable) {
-            const newNode = new LinkedNode(iterator);
+//         for (const iterator of iterable) {
+//             const newNode = new LinkedNode(iterator);
 
-            if (previousElement) {
-                previousElement.next = previousElement = newNode;
-            } else {
-                this.head = previousElement = newNode;
-            }
-        }
+//             if (previousElement) {
+//                 previousElement.next = previousElement = newNode;
+//             } else {
+//                 this.head = previousElement = newNode;
+//             }
+//         }
 
-        this.tail = previousElement;
-    }
-}
+//         this.tail = previousElement;
+//     }
+// }
 
-const linkedList = new LinkedList([1, 2, 3, 4, 5]);
-
-
+// const linkedList = new LinkedList([1, 2, 3, 4, 5]);
 
 
 
+const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// function binarySearchCycle(collection, target) {
+//     let result = -1;
+
+//     if (Array.isArray(collection) && collection.length) {
+//         let start = 0;
+//         let end = collection.length;
+//         let middle = Math.floor(end / 2);
+
+//         while(start < end) {
+//             const currentItem = collection[middle];
+
+//             if (currentItem === target) {
+//                 result = middle;
+//                 break;
+//             }
+
+//             currentItem > target ? (end = middle) : (start = middle);
+//             middle = Math.floor((start + end) / 2);
+//             console.log(start, end);
+//         }
+//     }
+
+//     return result;
+// }
 
 
-let element = linkedList.head;
-while (element && (element.next || element.value)) {
-    console.log(element.value, element);
-    element = element.next;
-};
+// function binarySearchRecursive(collection, target) {
+//     let result = -1;
 
-console.log('HEAD', linkedList.head);
-console.log('TAIL', linkedList.tail);
+//     if (Array.isArray(collection) && collection.length) {
+//         let start = 0;
+//         let end = collection.length;
+//         result = helper(start, end);
+//     }
+
+//     return result;
+
+//     function helper(start, end) {
+//         let middle = Math.floor((end + start) / 2);
+//         const currentItem = collection[middle];
+
+//         if (start + 1 === end) {
+//             return result;
+//         }
+
+//         if (currentItem === target) {
+//             return middle;
+//         }
+
+//         return currentItem > target ? helper(start, middle) : helper(middle, end);
+//     }
+// }
+// console.log(binarySearchRecursive(array, 11));
