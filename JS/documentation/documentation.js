@@ -1693,6 +1693,29 @@ new Test();
 
 
 
+//? Пример гонки/Гонка/Race
+/*
+Данная первая часть работать может не правильно, дело в том, что когда доходим до строчки totalLength += await getPageLength(pageNum), сначала сработает totalLength += и только потом будет вызвана асинхронная функция, результат которой будет сложен с уже полученным значением, а это значит, что если вторая функция в Promise.all будет выполнена быстрее, чем первая, то первая обнулит уже посчитанный результат второй функции
+let totalLength = 0;
+
+async function addLengthOfSinglePage(pageNum) {
+    totalLength += await getPageLength(pageNum);
+}
+
+Promise.all([addLengthOfSinglePage(1), addLengthOfSinglePage(2)]).then(() => {
+    console.log('The combined length of both pages is', totalLength);
+});
+
+Правильный вариант
+Тут мы уже получаем фактическое значение после асинхронности
+async function addLengthOfSinglePage(pageNum) {
+    const lengthOfThisPage = await getPageLength(pageNum);
+    totalLength += lengthOfThisPage;
+}
+*/
+
+
+
 
 
 
