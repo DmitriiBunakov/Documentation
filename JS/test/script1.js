@@ -110,14 +110,14 @@
 
 
 //debounce timer
-// function debounce(func, ms) {
-//     let timerEnded = true;
+// function debounce(callback, ms) {
+//     let canCall = true;
 
-//     return function(...args) {
-//         if (timerEnded) {
-//             timerEnded = false;
-//             setTimeout(() => timerEnded = true, ms);
-//             func(...args);
+//     return function inside(...args) {
+//         if (canCall) {
+//             canCall = false;
+//             callback.apply(this, args);
+//             setTimeout(() => canCall = true, ms);
 //         }
 //     }
 // }
@@ -154,7 +154,7 @@
 
 //         if (lastCall === undefined || call >= lastCall + ms) {
 //             lastCall = call;
-//             func(...args);
+//             callback.apply(this, args);
 //         }
 //     }
 // }
@@ -196,7 +196,6 @@
 // function throttle(callback, ms) {
 //     let canCall = true;
 //     let wasCallOnPending = false;
-//     let lastCallTimerId;
 //     let lastArgs;
 
 //     return function inside(...args) {
@@ -204,15 +203,14 @@
 
 //         if (canCall) {
 //             canCall = false;
-//             callback(...args);
-//             clearTimeout(lastCallTimerId);
+//             callback.apply(this, args);
 
-//             lastCallTimerId = setTimeout(() => {
+//             setTimeout(() => {
 //                 canCall = true;
 
 //                 if (wasCallOnPending) {
 //                     wasCallOnPending = false;
-//                     inside(...lastArgs);
+//                     inside.apply(this, lastArgs);
 //                 }
 //             }, ms);
 //         } else {
