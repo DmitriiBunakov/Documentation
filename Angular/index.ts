@@ -479,6 +479,40 @@ public onChangeInput(event: Event): void {
 
 
 
+// https://stackoverflow.com/questions/41789702/how-to-use-angular-structural-directive-with-multiple-inputs
+//? Структурные директивы пишутся с синтаксисом *. В нее можно заинжектировать templateRef(она сама обернет компонент в шаблон), и viewContainerRef(манипуляции с данным представлением), и с помощью них можно управлять контентом.
+//? Синтаксис привязки странный:
+/*
+@Directive({
+    selector: '[test]'
+})
+export class TestDirective {
+    constructor(
+        protected templateRef: TemplateRef<HTMLElement>,
+        protected viewContainerRef: ViewContainerRef,
+    ) {}
+
+    @Input() public set test(data: boolean) {
+        console.log(3);
+        console.log(this);
+        if (data) {
+            this.viewContainerRef.createEmbeddedView(this.templateRef);
+        } else {
+            this.viewContainerRef.clear();
+        }
+    }
+
+    @Input() set testBla(data: any) {
+        console.log(data);
+    }
+}
+<button *test="true;bla:12323">BUTTON</button>
+*/
+
+
+
+
+
 
 
 
