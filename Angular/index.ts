@@ -971,6 +971,16 @@ providers: [
 
 
 
+// https://angular.io/guide/http#starting-the-request
+//? при каждой подписке будет сделан новый запрос
+/*
+const req = http.get<Heroes>('/api/heroes');
+req.subscribe();
+req.subscribe();
+*/
+
+
+
 
 //? JSONP
 // TODO https://angular.io/guide/http#making-a-jsonp-request
