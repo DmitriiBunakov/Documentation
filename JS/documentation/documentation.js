@@ -5333,3 +5333,17 @@ controller.abort();
 
 
 
+
+
+@mixin lineClamp($clamp: 1) {
+    /* stylelint-disable */
+    display: -webkit-box;
+    line-clamp: $clamp;
+    box-orient: vertical;
+    -webkit-line-clamp: $clamp;
+    -webkit-box-orient: vertical;
+    /* stylelint-enable */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
