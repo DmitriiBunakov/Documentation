@@ -578,7 +578,7 @@ alert(age);   //выведет "undefined"
 
 
 //? Boolean
-//? приводятся при && || !
+//? приводятся при !
 
 
 
@@ -3547,6 +3547,9 @@ import * as object from '';
 //? этот метод возврщает промис, в котором резултат - это обьект модуля
 
 
+//? если динамический модуль внутри себя использует импорт статический, то статический файл подгрузится корректно после загрузки динамического
+
+
 
 
 
@@ -3773,6 +3776,9 @@ f();
 // https://developer.mozilla.org/ru/docs/Web/API/Document_Object_Model/Introduction
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
 // https://developer.mozilla.org/en-US/docs/Web/API/Document        ***интерфейс
+
+
+//? Загрузка CSS блокирует рендер html
 
 //? Document Object Model, сокращённо DOM – объектная модель документа, которая представляет все содержимое страницы в виде объектов, которые можно менять. Объект document – основная «входная точка». С его помощью мы можем что-то создавать или менять на странице.
 
@@ -4990,6 +4996,7 @@ console.log("Welcome to loupe.");
 
 //? Сразу после каждой задачи движок исполняет все задачи из очереди микрозадач перед тем, как выполнить следующую макрозадачу или отобразить изменения на странице, или сделать что-то ещё. Все микрозадачи завершаются до обработки каких-либо событий или рендеринга, или перехода к другой макрозадаче. Микрозадачи всегда беруться раньше всего остального из очереди, они имеют приоритет
 //? После микрозадач идет отрисовка, если она есть. Выполняются все задачи в очереди по рендеру страницы
+//? Requestanimationframe, а также отрисовка дальнейшая
 
 //? Если мы хотим запустить функцию асинхронно (после текущего кода), но до отображения изменений и до новых событий, то можем запланировать это через queueMicrotask.
 
@@ -5003,7 +5010,7 @@ console.log("Welcome to loupe.");
 
 
 //!================================================================================================================================================
-//? /Reflow(/Layout/)/Repaint/Composite/
+//? /Style/Reflow(/Layout/)/Repaint/Composite/
 // https://rashidovr.medium.com/reflow-repaint-composite-%D1%87%D1%82%D0%BE-%D1%8D%D1%82%D0%BE-%D0%B8-%D0%BA%D0%B0%D0%BA-%D1%8D%D1%82%D0%BE-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82-a777c5760295
 // https://docs.google.com/spreadsheets/u/0/d/1Hvi0nu2wG3oQ51XRHtMv-A_ZlidnwUYwgQsPQUg1R2s/pub?single=true&gid=0&output=html
 // https://gist.github.com/paulirish/5d52fb081b3570c81e3a
@@ -5012,6 +5019,8 @@ console.log("Welcome to loupe.");
 //? /RAF/RequestAnimationFrame/
 //? На этом этапе браузер готов к запуску рендера и мы подготавливаем кадр для шага анимации. Эти просчеты как раз выполняются перед рендером
 
+
+//? /Recalculate Style/Style/
 
 
 //? Reflow, Repaint запускаются в eventLoop, а это значит, что интерактивность может закончиться, если js выполняет слишком сложный код.
@@ -5023,12 +5032,12 @@ console.log("Welcome to loupe.");
 
 
 
-//? Repaint
-//? Запускается сразу после layout, тут происходит окрашивание элементов, ширина высота, также это ресурсоемкая операция, которую как минимум вызывают манипуляции с цветом, задним фоном, и т.д.
+//? /Repaint/Paint/
+//? Запускается сразу после layout, тут происходит окрашивание элементов, также это ресурсоемкая операция, которую как минимум вызывают манипуляции с цветом, задним фоном, и т.д.
 
 
 
-//? Composite
+//? /Composite/
 //? Эта задача происходит в потоке композитора compositor thread. Тут происходит группировка страницы по слоям, растрирование слоев(отрисовка пикселей). В данном потоке также есть подзадачи, например браузер в приоритете отписовывает те элементы, что видны в данный момент в окне.
 //? Например will-change, transform, translate3d выносят графику на композит задачу, поэтому такая плавная она и не блокируется js кодом.
 //? НО также надо помнить, что данный этап кушает память, поэтому каждый элемент не надо помечать will-change свойством, иначе память попросту закончится.
@@ -5335,15 +5344,15 @@ controller.abort();
 
 
 
-@mixin lineClamp($clamp: 1) {
-    /* stylelint-disable */
-    display: -webkit-box;
-    line-clamp: $clamp;
-    box-orient: vertical;
-    -webkit-line-clamp: $clamp;
-    -webkit-box-orient: vertical;
-    /* stylelint-enable */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
-}
+// @mixin lineClamp($clamp: 1) {
+//     /* stylelint-disable */
+//     display: -webkit-box;
+//     line-clamp: $clamp;
+//     box-orient: vertical;
+//     -webkit-line-clamp: $clamp;
+//     -webkit-box-orient: vertical;
+//     /* stylelint-enable */
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     word-break: break-word;
+// }

@@ -1,0 +1,1 @@
+export const scrpt3 = 4;

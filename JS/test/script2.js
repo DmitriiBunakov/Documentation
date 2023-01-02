@@ -1,5 +1,9 @@
-// // sessionStorage.setItem('test', 'test');
-// console.log(sessionStorage);
-// // console.log(sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer'));
+import * as Script3 from './script3.js';
 
-// console.log(localStorage);
+console.log('start2');
+
+const a = {
+    name: 'Dima'
+}
+
+export {a};
