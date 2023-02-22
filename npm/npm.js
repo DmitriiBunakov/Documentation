@@ -26,6 +26,8 @@
 //? npm uninstall -g <package_name>
 //? npm uninstall -g <@scope/package_name>
 
+//? npm login
+//? npm logout
 /*
 **
 ***

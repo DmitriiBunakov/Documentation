@@ -46,3 +46,35 @@ class Stack {
 //? /Queue/Очередь/
 
 //? Структура данных работает по принципу FIFO(First in first out).
+/*
+**
+***
+****
+*****/
+//? /Array/
+// https://medium.com/@rodriguezlf4/static-vs-dynamic-arrays-javascript-beauty-f226e153cbc9
+
+
+//? /Amortized/Аммортизация
+// https://medium.com/@satorusasozaki/amortized-time-in-the-time-complexity-of-an-algorithm-6dd9a5d38045
+//? Статический vs динамический массив
+//? добавление элемента в статический массив быстрее, чем в динамический, тк размер известен заранее
+//? добавлении в динамический массив при его заполнении происходит выделение памяти в 2 раза больше чем он сейчас уже заполнен, а также при этом происходит копирование всех значений в новый массив
+/**
+const int = 1_000_000;
+
+const dynamic = [];
+const fixed = new Array(int);
+
+console.time();
+for (let index = 0; index < int; index++) {
+    dynamic[index] = index;
+}
+console.timeEnd();
+
+console.time('second');
+for (let index = 0; index < int; index++) {
+    fixed[index] = index;
+}
+console.timeEnd('second');
+ */
