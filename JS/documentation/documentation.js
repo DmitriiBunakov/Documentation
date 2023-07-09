@@ -1446,6 +1446,33 @@ Promise.all([_1, _2, _3])
         console.log(res);   //[undefined, undefined, undefined] потому что наши промисы ничего не возвращали
         console.log('after waiting all promises');
     });
+
+
+
+
+function first() {
+    return Promise.resolve();
+}
+
+function second() {
+    return Promise.resolve();
+}
+
+
+async function test() {
+    console.time();
+    for (let index = 0; index < 1_000_00; index++) {
+        // await Promise.all([
+        //     first(),
+        //     second(),
+        // ]);
+        await first();
+        await second();
+    }
+    console.timeEnd();
+}
+test();
+
 */
 
 

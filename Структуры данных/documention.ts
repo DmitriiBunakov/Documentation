@@ -1,7 +1,7 @@
-//!================================================================================================================================================
+//*=============================================================================
 //? /Стэк/Stack/
-
 //? Стэк организован по принципы LIFO(First in last out, последним пришел - первым вышел).
+
 
 //? Можно добавлять элемент наверх стэка, удалять, читать верхний элемент, длину получать
 /*
@@ -37,25 +37,25 @@ class Stack {
     }
 }
 */
-
-
-
-
-
-//!================================================================================================================================================
+/*
+**
+***
+****
+*****/
+//*=============================================================================
 //? /Queue/Очередь/
-
 //? Структура данных работает по принципу FIFO(First in first out).
 /*
 **
 ***
 ****
 *****/
+//*=============================================================================
 //? /Array/
 // https://medium.com/@rodriguezlf4/static-vs-dynamic-arrays-javascript-beauty-f226e153cbc9
 
 
-//? /Amortized/Аммортизация
+//? /Amortized/Аммортизация/
 // https://medium.com/@satorusasozaki/amortized-time-in-the-time-complexity-of-an-algorithm-6dd9a5d38045
 //? Статический vs динамический массив
 //? добавление элемента в статический массив быстрее, чем в динамический, тк размер известен заранее
@@ -64,17 +64,39 @@ class Stack {
 const int = 1_000_000;
 
 const dynamic = [];
+const push = [];
 const fixed = new Array(int);
 
-console.time();
+
+console.time('push');
+for (let index = 0; index < int; index++) {
+    push.push(index);
+}
+console.timeEnd('push');
+
+
+console.time('dynamic');
 for (let index = 0; index < int; index++) {
     dynamic[index] = index;
 }
-console.timeEnd();
+console.timeEnd('dynamic');
+
 
 console.time('second');
 for (let index = 0; index < int; index++) {
     fixed[index] = index;
 }
 console.timeEnd('second');
- */
+
+
+console.log(dynamic);
+console.log(fixed);
+console.log(push);
+*/
+/*
+**
+***
+****
+*****/
+//*=============================================================================
+//? /Joshua Block/Linked list/
