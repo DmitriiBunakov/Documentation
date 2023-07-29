@@ -77,26 +77,82 @@
 
 
 
-setTimeout(() => {
-    console.log('timer');
-}, 0)
 
-const a = document.createElement('button');
-document.body.append(a);
-a.addEventListener('click', () => {
-    console.log('click');
+
+// let string = '';
+
+// for (let index = 0; index < 1_0; index++) {
+//     string += index;
+// }
+
+// // console.log(string);
+
+
+// let arr = [string];
+
+// // for (let index = 0; index < 1_000_00; index++) {
+//     // arr.push(string);
+// // }
+
+
+// console.log(arr);
+
+
+
+
+console.log(1);
+
+setImmediate(() => {
+    console.log('immediate');
+
+    process.nextTick(() => {
+        console.log('next tick immediate');
+    })
+})
+
+process.nextTick(() => {
+    console.log('next tick');
 })
 
 
-for (let index = 0; index < 1_000_000; index++) {
-    a.getBoundingClientRect();
-    a.style.width = '100px';    
-    a.style.height = '100px';    
-    a.style.backgroundColor = 'red';    
-}
+setTimeout(() => {
+    console.log('timer');
+    process.nextTick(() => {
+        console.log('next tick timer');
+    })
+}, 0)
+
+Promise.resolve()
+    .then(() => {
+        console.log('promise');
+
+        queueMicrotask(() => {
+            console.log('queueMicrotask');
+        })
+
+        process.nextTick(() => {
+            console.log('next tick 2');
+        })
+    })
+
+process.nextTick(() => {
+    console.log('next tick 2');
+})
+
+console.log(2);
+
+let i = 0;
+// nextTick()
 
 
-function test() {
-    Promise.resolve().then(test)
+function nextTick() {
+    if (i > 1_000_000) {
+        return
+    }
+
+    process.nextTick(() => {
+        i++;
+        console.log('next tick');
+        nextTick();
+    })
 }
-// test()
