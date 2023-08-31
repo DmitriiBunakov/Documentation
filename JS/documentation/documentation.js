@@ -1,3 +1,21 @@
+//!=============================================================================
+//? /First contentful paint/
+// https://developer.mozilla.org/ru/docs/Glossary/First_contentful_paint
+//? время за которое пользователь увидит хоть что то
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Time to interactive/
+// https://developer.mozilla.org/ru/docs/Glossary/Time_to_interactive
+//? время до интерактивности
+/*
+**
+***
+****
+*****/
 //!================================================================================================================================================
 //? /ECMAScript/
 // http://web.spt42.ru/index.php/chto-takoe-ecmascript
@@ -3805,9 +3823,22 @@ f();
 // https://developer.mozilla.org/ru/docs/Web/API/Document_Object_Model/Introduction
 // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
 // https://developer.mozilla.org/en-US/docs/Web/API/Document        ***интерфейс
+// https://developer.mozilla.org/en-US/docs/Learn/Performance/CSS       оптимизация css
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/rel/preload
+
+
+//? отправляется запрос
+//? приходит html
+//? строится dom
+//? загружаются ресурсы (css - блокирует, script - блокирует если находится в head, нет defer/async, шрифты подключенные через link с CDN - блокируют)
 
 
 //? Загрузка CSS блокирует рендер html
+//? также чтобы оптимизировать css - лучше разбить на разные файлы, а не делать import зависимостей в один
+
+
+//? шрифты можно оптимизировать включив нужные сразу в css файл
+
 
 //? Document Object Model, сокращённо DOM – объектная модель документа, которая представляет все содержимое страницы в виде объектов, которые можно менять. Объект document – основная «входная точка». С его помощью мы можем что-то создавать или менять на странице.
 
