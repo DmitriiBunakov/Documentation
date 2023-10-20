@@ -83,9 +83,7 @@
 //     console.log('promise');
 // })
 
-document.body.addEventListener('click', function name(e) {
-    // e.target.classList.remove('test')
-    requestAnimationFrame(() => {
-        console.dir(e.target.offsetHeight);
-    })
-})
+setTimeout(() => {
+    console.log(document.querySelector('img'));
+    document.querySelector('img').src = 'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?w=2000'
+}, 1000)
