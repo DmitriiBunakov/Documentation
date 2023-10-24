@@ -15,3 +15,12 @@
 
 //? Встраивание видео
 //? iframe убираем width и height из html, и в CSS применить тоже самое, то есть object-fit и паддинг
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Form/
+//? /Output/
+// https://developer.mozilla.org/ru/docs/Web/HTML/Element/output
