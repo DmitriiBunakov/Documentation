@@ -83,7 +83,80 @@
 //     console.log('promise');
 // })
 
+const lazyImg = 'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?w=2000'
+
 setTimeout(() => {
-    console.log(document.querySelector('img'));
-    document.querySelector('img').src = 'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?w=2000'
+    document.querySelector('img').src = lazyImg;
 }, 1000)
+
+console.log('SCRIPT');
+
+// window.addEventListener('fetch', (event) => {
+//     console.log(event);
+// })
+
+// const src = 'http://127.0.0.1:5500/JS/test/css.css';
+// const htmlSrc = 'http://127.0.0.1:5500/JS/test/index.html';
+
+
+// const CACHE = window.caches.open('test');
+
+
+// CACHE.then(cache => {
+//     cache.add(src).then(() => {
+//         console.log('success');
+//     })
+
+//     cache.addAll([
+//         htmlSrc,
+//         lazyImg,
+//     ]).then(() => {
+//         console.log('all');
+//     })
+// })
+
+
+
+// const worker = new Worker('./worker.js');
+// const worker = new SharedWorker('./worker.js');
+// const worker = new ServiceWorker('./worker.js');
+
+// worker.port.start()
+
+// let i = 0;
+
+
+// setInterval(() => {
+//     // worker.postMessage('some message')
+//     i++;
+// }, 2000)
+
+
+// worker.postMessage(1);
+
+// setTimeout(() => {
+    // worker.postMessage(2);
+// }, 3000)
+
+// worker.addEventListener('message', event => {
+    // console.log(event);
+// })
+
+navigator.serviceWorker.register('./service-worker.js')
+    .then(a => {
+        console.log(a);
+
+
+        setTimeout(() => {
+            console.log('timer');
+            a.update()
+        }, 5000)
+
+
+        fetch('https://jsonplaceholder.typicode.com/todos/1')
+            .then(response => response.json())
+            .then(json => console.log(json))
+    })
+    .catch(e => {
+        console.log(e);
+    })

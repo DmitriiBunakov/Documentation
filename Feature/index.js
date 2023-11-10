@@ -29,3 +29,14 @@
 
 //? at rules
 // https://developer.mozilla.org/ru/docs/Web/CSS/@font-face
+
+//? CDNs
+
+//? https://developer.mozilla.org/en-US/docs/Web/API/MediaSource
+
+//? https://developer.mozilla.org/en-US/docs/Web/API/Navigator
+
+//? https://developer.mozilla.org/ru/docs/Web/Performance/How_browsers_work
+
+//? cache/service/worker
+// https://developer.mozilla.org/ru/docs/Web/API/Cache
