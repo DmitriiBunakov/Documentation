@@ -40,3 +40,9 @@
 
 //? cache/service/worker
 // https://developer.mozilla.org/ru/docs/Web/API/Cache
+
+//? https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP
+
+//? https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+
+//? https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#cross-site_scripting_xss

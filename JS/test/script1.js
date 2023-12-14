@@ -83,13 +83,13 @@
 //     console.log('promise');
 // })
 
-const lazyImg = 'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?w=2000'
+// const lazyImg = 'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?w=2000'
 
-setTimeout(() => {
-    document.querySelector('img').src = lazyImg;
-}, 1000)
+// setTimeout(() => {
+//     document.querySelector('img').src = lazyImg;
+// }, 1000)
 
-console.log('SCRIPT');
+// console.log('SCRIPT');
 
 // window.addEventListener('fetch', (event) => {
 //     console.log(event);
@@ -142,21 +142,100 @@ console.log('SCRIPT');
     // console.log(event);
 // })
 
-navigator.serviceWorker.register('./service-worker.js')
-    .then(a => {
-        console.log(a);
+// navigator.serviceWorker.register('./service-worker.js', {scope: '/'})
+//     .then(a => {
+//         console.log(a);
 
 
-        setTimeout(() => {
-            console.log('timer');
-            a.update()
-        }, 5000)
+//         // setTimeout(() => {
+//         //     console.log('timer');
+//         //     a.update()
+//         // }, 5000)
 
 
-        fetch('https://jsonplaceholder.typicode.com/todos/1')
-            .then(response => response.json())
-            .then(json => console.log(json))
-    })
-    .catch(e => {
-        console.log(e);
-    })
+//         // fetch('https://jsonplaceholder.typicode.com/todos/1')
+//         //     .then(response => response.json())
+//         //     .then(json => console.log(json))
+//     })
+//     .catch(e => {
+//         console.log(e);
+//     })
+
+
+// function syncSleep(){
+//     let counter = 0;
+//     for (let index = 0; index < 1_000_000_0; index++) {
+//         counter++
+//     }
+// }
+
+
+// const div = document.querySelector('.test-box');
+
+// div.addEventListener('click', function clickCallback(event){
+//     syncSleep();
+
+//     // div.style.width = parseInt(styles.width) * 2 + 'px';
+
+
+//     // for (let index = 0; index < 1000; index++) {
+//     //     const styles = window.getComputedStyle(div);
+//     //     console.log(div.clientTop);;
+//     //     div.style.width = parseInt(styles.width) * 2 + 'px';
+//     // }
+
+//     // changeDivWidth();
+
+//     // setTimeout(function timerCallback(){
+//     //     syncSleep();
+//     //     console.log('timer');
+//     // }, 1000)
+
+//     growMemoryLeak();
+
+// })
+
+// let initialCounter = 0;
+// function changeDivWidth(){
+//     if(initialCounter > 100) return;
+//     const styles = window.getComputedStyle(div);
+
+//     requestAnimationFrame(()=>{
+//         initialCounter++;
+//         div.style.width = parseInt(styles.width) * 2 + 'px';
+//         changeDivWidth();
+//     })
+// }
+
+
+// var x = [];
+
+// function growMemoryLeak() {
+//     // for (var i = 0; i < 10000; i++) {
+//     //     document.body.appendChild(document.createElement('div'));
+//     // }
+
+//     x.push(new Array(1000000).join('x'));
+// }
+
+
+
+const arr = [10, 100, 200, 300, 1000, 20, 30, 1000, 1000, 1000, 1001];
+
+
+function find(k, arr) {
+    const sorted = arr.sort((a, b)=>a-b);
+    let result;
+
+    for (let index = 0; index < sorted.length; index++) {
+        const difference = sorted[index + k - 1] - sorted[index];
+
+        if (difference !== 0 && difference < result || result == null) {
+            result = difference;
+        }
+    }
+
+    return result
+}
+
+console.log(find(3, arr));

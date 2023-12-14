@@ -1,42 +1,545 @@
 //!=============================================================================
-//? /First contentful paint/
-// https://developer.mozilla.org/ru/docs/Glossary/First_contentful_paint
-//? время за которое пользователь увидит хоть что то
+// https://developer.mozilla.org/ru/docs/Learn/Common_questions
+// https://www.scaler.com/topics/difference-between-internet-and-www/
+// https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/Pages_sites_servers_and_search_engines
+// https://www.youtube.com/watch?v=7_LPdttKXPc&ab_channel=Aaron
+// https://www.youtube.com/watch?v=x3c1ih2NJEg&ab_channel=Lesics
+// https://developer.mozilla.org/ru/docs/Learn/Common_questions/Web_mechanics/How_does_the_Internet_work
+// https://habr.com/ru/companies/karuna/articles/568702/
+//? /Internet/
+//? Это сеть связанных между собой компьютеров
+//? работает через протоколы TCP/IP
+
+//? для связи машин между собой используют wifi/internet кабель
+
+
+//?=============================================================================
+//? router
+//? централизованный апарат - который раскидывает сообщения от компа к компу, тем самым все компы соединены с роутером, а он уже выступает в виде прослойки
+//? создает сеть - если нужно связать несоколько сетей - использует больше роутеров между другими роутерами и тд
+
+
+//? modem
+//? устройство которое подключает нашу сеть к интернет-провайдеру, без него доступа в интернет не будет
+
+
+//? internet-provider
+//? компания, которая предоставляет нам интернет и она связана посредством сети с другими роутерами из других интернет компаний и тд
+
+
+//?=============================================================================
+//? IP
+//? уникальный адресс устройства в сети интернет(машинный адресс - для людей он хранится в преобразованном)
+
+
+
+//? Domain
+// https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_domain_name
+//? человекочитаемый ip address
+//? чтобы узнать, можно ли на домене зарегестрировать сайт - нужно проверить свободен ли домен
+
+
+
+//? DNS
+//? dns - система отвечающая за преобразование человека-читаемого адреса в ip (строки преобразуются в ip)
+//? запрос -> из кэша берем ip этого сайта -> запрос на dns -> согласование запроса с сервером
 /*
 **
 ***
 ****
 *****/
 //!=============================================================================
-//? /Time to interactive/
-// https://developer.mozilla.org/ru/docs/Glossary/Time_to_interactive
-//? время до интерактивности
+//? /WEB/
+//? Web - сеть связанных между собой сайтов с помощью интернета, работа с гипертекстом
+//? работает через http/https
+
+
+//? Основные столпы
+//? HTTP/HTTPS
+//? URL/Uniform Resource Locator - уникальный адрес ресурса, и всё. Может быть что угодно - html/css/video/и тд
+//? HTML/hypertext - формат веб документов
+
+
+
+//? web-page - html документ - уникальные пути внутри Domen'a   domain/path.html или domain/path2.html - 2 разные страницы
+//? web-site - коллекция web-page - имеет уникальный Domen
+//? web-server - место, где хранится ресурс
+//? search-engine - поисковик сайтов (google, yandex, и тд)
+//? browser - программа отображающая нам web-pages
+//? web-client - инициатор запроса в основном браузер
+//? hyperlink - ссылка на другую веб страницу
+//? hyperText - текст позволяющий ссылаться на другие текста
 /*
 **
 ***
 ****
 *****/
-//!================================================================================================================================================
+//!=============================================================================
+//? /Protocol/Протокол/
+
+//? протокол - единый подход к обмену данными, который может передавать hypertext, а благодоря расширяемости и video и тд
+
+//? существуют разные:
+//? data: ----- Data URLs
+//? file: ----- Host-specific file names
+//? ftp: ----- File Transfer Protocol
+//? http: ----- https	Hyper text transfer protocol (Secure)
+//? javascript: ----- URL-embedded JavaScript code
+//? mailto: ----- Electronic mail address
+//? ssh: ----- Secure shell
+//? tel: ----- telephone
+//? urn: ----- Uniform Resource Names
+//? view: ----- source	Source code of the resource
+//? ws: ----- wss WebSocket connections (Secure)
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /HTTP/HTTPS/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP
+
+//? http/https - hyper text transfer protocol протоколы позволяющие обмениваться данными
+
+//? обмен данными без запоминания состояния
+
+//? использует соединение TCP с шифрованием SSL/TSL
+
+//? https использует защищенность SSL/TSL
+
+//? расширяемый благодоря заголовкам - клиент сервер сами настраивают связь между собой
+
+//? нет состояния - например аутентификации. Достигается это например с помощью cookie
+
+//? позволяет кэшировать
+/*
+**
+***
+****
+*****/
+//? Как происходит запрос
+//? -> http запрос, тут же отправляется OPTIONS запрос, чтобы получить что поддерживаем сервер (безопасный запрос, он не меняет ничего)
+//? -> dns обработка
+//? -> браузер делает запрос на сервер, есть ли ssl, и получает публичный ключ, затем в центр сертификации, затем браузер генерирует сессионный ключ и отправляет его на сервер кодируя публичным, затем сервер отвечает успехом и соединение установлено
+//? -> proxies...
+//? -> отправка пакета данных и обратно подтверждение доставки и тд пока не будет переданы данные
+//? -> запрос на разрыв соединения и разрыв или использование соединения для дальнейших запросов
+/*
+**
+***
+****
+*****/
+//? /Client/
+//? инициатор запроса
+
+//? request запрос состоит из
+//? http method - GET | PUT и тд
+//? url
+//? http version
+//? headers
+//? body
+
+
+
+//? /Webserver/
+// https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Web_mechanics/What_is_a_web_server
+//? устройство подключеннок к интернету и обрабатывает запросы
+//? работает через http
+
+//? response ответ состоит из
+//? http version
+//? response code (200, 404)
+//? message
+//? headers
+//? body - если вообще ничего не нужно возврщать - обычно 201/204 код
+
+
+
+//? /Proxy/
+//? посредник в обработке запроса
+//? например кэши, фильтрация и тд
+
+
+
+//? /Сертификаты/Certificates/SSL/TSL/
+//? шифруют данные для безопасного обмена между клиентом и сервером
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Mime/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_Types
+// https://www.iana.org/assignments/media-types/media-types.xhtml
+
+//? отображает тип документа
+//? браузеры не смотрят на расширении файла, они смотрят на то, какой mime у этого файла, если не указан, некоторые браузеры по своему будут пытаться распознать тип файла
+
+
+//? type/subtype;parameter=value
+//? text/html --- text/plain --- text/javascript
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /URI/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web
+//? все документы имеют uri - уникальный идентификатор ресурс
+
+//? самый распространенный вид - это URL
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /DatURI/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs
+
+//? позволяет встраивать небольшие файлы в документ
+
+
+//? data:[<mediatype>][;base64],<data>
+//? data:text/html,%3Ch1%3EHello%2C%20World%21%3C%2Fh1%3E - html документ
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /URL/
+//? Абсолютный путь
+
+
+//? структура
+//? http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
+//? http:// - протокол
+
+//? www.example.com - domain(ip address)
+
+//? :80 - port (80 для HTTP и 443 для HTTPS)
+
+//? path/to/myfile.html - путь до файла
+
+//? ?key1=value1&key2=value2 - queryParams
+
+//? #SomewhereInTheDocument - anchor
+//? никогда не посылается на сервер в запросе - позволяет переходить к "закладкам на сайте"
+
+
+//? Относительный путь
+//? в html - когда мы ссылаемся на ресурс не указывая его полный путь - браузер начинает его искать относительно того, где мы находимся сейчас
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Headers/
+
+
+//? Content-type
+//? какой тип body отправляет на бэк или получается
+
+
+//? Content-length
+//? размер в байтах
+
+
+//? Transfer-Encoding
+//? отправка одного ресурса неизвестной длины
+
+
+//? Content-Security-Policy
+//? защита от xxs атак, разрешить загружать данные из определенных источников (CSP)
+
+
+//? Strict-Transport-Security
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+//? указывает браузеру, что доступ к сайту только через https
+
+
+//? X-Content-Type-Options
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+//? это маркер, используемый сервером для указания того, что типы MIME , объявленные в Content-Typeзаголовках, следует соблюдать и не изменять. Заголовок позволяет избежать перехвата типов MIME , сообщая, что типы MIME настроены намеренно.
+
+
+//? X-Frame-Options
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+
+
+//? X-XSS-Protection
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Response/Ответы/
+//? Access-Control-Allow-Origin
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+//? заголовок ответа указывает может быть контент доступен для запрашивающего или нет
+//? * - любой, будет игнорироваться, если credentials=true => запрос упадет
+//? origin - для конкретного источника
+
+//? для https://developer.mozilla.org origin мы установим https://developer.mozilla.org заголовк, чтобы ответ был ок, то есть origin должен быть потом равен заголовку
+
+
+//? Vary
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary
+//? ответ используется для создания ключа кэша, когда используется согласование содержимого
+
+
+
+//? Access-Control-Allow-Methods
+//? ответ на OPTIONS какие методы можем использовать
+
+
+
+//? Access-Control-Expose-Headers
+//? какие заголовки доступны для js в браузере на ответ из разных источников
+//? изначально доступные только эти https://developer.mozilla.org/en-US/docs/Glossary/CORS-safelisted_response_header
+
+
+
+//? Access-Control-Allow-Credentials
+//? разрешает клиенту получать ответ или нет, если передаем credentials=include
+//? если делается запрос credentials=true, то сервер должен вернуть этот заголовок иначе ответа от сервера не будет
+
+
+
+//? Access-Control-Allow-Headers
+//? ответ на OPTIONS какие заголовки мы можем отправлять
+
+
+
+//? Access-Control-Max-Age
+//? ответ на OPTIONS на сколько можно закешировать OPTIONS запрос, чтобы не гонять его постоянно
+
+
+
+//? Timing-Allow-Origin
+//? источники, которым можно видеть значения атрибутов из Resource timing API
+// https://developer.mozilla.org/en-US/docs/Web/API/Performance_API/Resource_timing
+
+
+
+//? Allow
+//? то же что и Access-Control-Allow-Methods, но отсылается когда сделали неверный метод запроса и отправляем 405 ошибку
+
+
+
+//? Set-Cookie
+//? ответ сервера на установку заголовка, несколько раз нужно отправить, чтобы несколько установить
+//? не установит ничего, если Access-Control-Allow-Origin=*
+
+
+
+//? WWW-Authenticate
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/WWW-Authenticate
+//? какой метод аутентификации использовать можно, чтобы получить доступ к ресурсу, отдается с 401 ошибкой и должен включать хотя бы один метод
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Request/Запросы/
+
+
+//? Origin
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin
+//? автоматически устанавливается. показывает кто делает запрос
+
+
+
+//? Access-Control-Request-Method
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Method
+//? заголовок запроса отправляющийся в OPTIONS чтобы сказать серверу какой запрос будет выполняться
+
+
+
+//? Access-Control-Request-Headers
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Request-Headers
+//? заголовок запроса в OPTIONS чтобы сказать какие заголовки отправляться будут и сервер узнает, сможет он обработать это или нет
+
+
+
+//? Authorization
+//? предоставляет данные для аутентификации и доступа к ресурсу
+
+
+
+//? Cookie
+//? отправка данных на сервер установленных ранее от сервера или через js
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+// https://developer.mozilla.org/en-US/docs/Glossary/CSRF
+//? /CSRF/Cross-Site Request Forgery/
+//? подделка запросов
+
+
+//? пример <img src="https://www.example.com/index.php?action=delete&id=123" />
+//? происходит запрос на example.com, но также еще и какие то действия пытаемся сделать
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /CORS/
+// https://developer.mozilla.org/en-US/docs/Glossary/CORS
+// https://aws.amazon.com/ru/what-is/cross-origin-resource-sharing/#:~:text=Cross%2Dorigin%20resource%20sharing%20(CORS,resources%20in%20a%20different%20domain.
+// https://enable-cors.org/server.html
+// https://httptoolkit.com/will-it-cors/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors
+//? CORS система передачи заголовков, чтобы разрешить получать данные из разных источников (Same-origin policy), то есть если мы хотим получить данные из другого источника - сервер должен нам отдать заголовки разрешающие это сделать
+
+
+
+//? какие запросы используют CORS - сложные запросы считаются таковыми
+//? методы отличные GET | POST | HEAD
+//? Заголовки, отличные от Accept-Language, Accept или Content-Language
+//? Заголовки Content-Type, отличные от multipart/form-data, application/x-www-form-urlencoded и text/plain
+
+
+//? для сложных запросов будет сначала отправлен OPTIONS запрос, чтобы определить безопасно ли отправлять фактический запрос
+//? Access-Control-Request-Method
+//? Access-Control-Request-Headers
+
+
+
+//? для безопасности, ошибки связанные с CORS нельзя через js проверить никак - только в консоли
+
+
+
+//? по умолчанию браузеры не отправляют через fetch/XmlHttpRequest cookie, чтобы включить отправку - нужно withCredentials = true
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Same-origin policy/
+// https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
+//? зарпещает доступ одних источников к другим, если они разные
+
+//? одинаковые: один и тот же protocol, такой же domain, такой же port - все остальное - это разные источники
+
+
+//? хранилища, indexedDB, cookies - для каждого источника - свои
+
+
+//? можно через js изменить domain через document.domain, но это устаревшее
+
+
+//? есть ресусры которые можно встраивать из разных источников
+//? js
+//? css
+//? img
+//? video/audio
+//? iframe
+
+
+//? 2 документа могут ссылаться друг на друга через iframe без ограничений если они из одного источника, iframe.contentWidnow, window.parent, window.opener, window.opener, документы из разных источников будут иметь ограниченный доступ по этим свойствам и могут общаться только через postMessage
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /CSP/Content Security Policy/XSS/
+// https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+//? Защита получения данных из разных источников, например, чтобы предотвратить xxs атаку
+//? можем разрешить получать определенные файлы только из определенных источников
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Authentication/
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
+
+//? примерно как выглядит
+//? запрос на сервер
+//? ответ 401 + WWW-Authenticate(хотя бы одну схему для подтверждения пользователя доступную)
+//? запрос с отсыланием Authorization - передача данных авторизации и схема
+
+
+//? существуют разные схемы аутентификации (basic/bearer)
+//? они отличаются по уровню безопасности и доступности в ПО
+// https://www.iana.org/assignments/http-authschemes/http-authschemes.xhtml
+
+
+//? например есть Basic - передаются закодированные userLogin/userPassword в base64 и все, то есть достаточно легко взломать и перехватить
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /WEBSECURITY/
+//? /Check site/Проверить сайт на безопасноть/
+// https://observatory.mozilla.org/
+// https://infosec.mozilla.org/guidelines/web_security
+// https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#cross-site_scripting_xss
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /JAVASCRIPT/
 //? /ECMAScript/
 // http://web.spt42.ru/index.php/chto-takoe-ecmascript
 // https://ru.wikipedia.org/wiki/ECMAScript
 // https://habr.com/ru/company/nix/blog/342904/
 
-
 //? ECMAScript - спецификация на которой основываются языки, некий стандарт языка, сокращенно ES.
 //? Все, что помечено в документации к JS, как эксперементальная технология, значит этого нет в спецификации, и добавлено это именно разработчиками самого JS.
 
 //? Забаный факт, но сначала был создан JS в 1996 году, в 1997 году был принят стандарт ES, получается, что JS все таки батя.
-
-
-
-
-
-
-
-
-
-
+/*
+**
+***
+****
+*****/
 //!================================================================================================================================================
 //? /Engine/Движок JS/
 // https://nuancesprog.ru/p/8398/
@@ -5103,28 +5606,46 @@ console.log("Welcome to loupe.");
 *****/
 //!=============================================================================
 //? /Perfomance/Производительность/Оптимизация/
+// https://developer.chrome.com/docs/devtools/
 // https://developer.mozilla.org/en-US/docs/Web/Performance
 // https://web.dev/explore/metrics
 // https://web.dev/explore/how-to-optimize-inp
-// https://web.dev/articles/script-evaluation-and-long-tasks?hl=ru
 // https://developer.mozilla.org/en-US/docs/Web/API/Scheduling/isInputPending
 // https://web.dev/explore/fast
-// https://web.dev/articles/vitals?hl=ru
+// https://web.dev/articles/vitals
 // https://web.dev/articles/vitals-measurement-getting-started?hl=ru
 // https://web.dev/articles/optimize-lcp?hl=ru
 // https://web.dev/articles/lab-and-field-data-differences?hl=ru
 // https://web.dev/articles/fetch-priority?hl=ru
 // https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources/?hl=ru
 //? Основные метрики
-//? * LCP - скорость первоначальной отрисовки видимого контента
+//? * FP - время между переходом на страницу и моментом, когда браузер отображает первые пиксели на экране
+// https://developer.mozilla.org/ru/docs/Glossary/First_paint
+
+//? * FCP - первый отрисованный контент на странице
+// https://web.dev/articles/fcp
+
+//? * LCP - скорость первоначальной отрисовки видимого контента для юзера - то есть скорость загрузки изображения, видео, и в целом просто видимая верстка для пользователя будет учитываться тут
 
 //? * FID -> будет заменен на INP. Задержка всех взаимодействий пользователя, то есть через сколько времени страница отреагирует на события
-//? https://web.dev/articles/inp?hl=ru
+// https://web.dev/articles/inp?hl=ru
 
 //? * CLS - показатель неожиданных изменений, когда контент скачет сам собой из за какого асинхронного добавления
 
+//? DOMContentLoaded
+
+//? load
+
+
+
 //? Измерить можно PerformanceObserver
 //? pagespeed
+// https://pagespeed.web.dev
+//? lighthouse
+
+
+
+//? На табе perfomance можно измерить сколько времени выполняется таск, что вызывает reflow/repaint, что блокирует поток и тд
 /*
 **
 ***
@@ -5218,12 +5739,13 @@ console.log("Welcome to loupe.");
 //? * чтение/установка стилей/классов должна вызываться в raf
 //? на чтение всегда операции нужно группировать и выполнять перед изменением классов/стилей и манипуляций с dom, потому что нам доступны предыдущие положения/стили предыдущего кадра
 
-// https://gist.github.com/paulirish/5d52fb081b3570c81e3a#getting-box-metrics
 //? * очень много стилей/добавление классов - не важно, через css или js - вызывают пересчет стилей - делать это нужно аккуратно
+// https://gist.github.com/paulirish/5d52fb081b3570c81e3a#getting-box-metrics
 
 //? * не менять стили в цикле каком то и тд, чтобы не было вызовов типа установка -> перерисовка -> установка -> перерисовка -> установка -> перерисовка -> установка -> перерисовка ->    можно заменить на установка/установка/установка/установка -> перерисовка
 
 //? * удалить неиспользуемый код
+//? cmd shift p -> coverage -> проверить неиспользуемый код на сайте
 
 //? * client-side-render
 
@@ -5306,7 +5828,7 @@ console.log("Welcome to loupe.");
 
 //? * js tasks -> (microTasks) -> resizeObserver/raf -> style -> layout/reflow -> paint/repaint -> composite
 //? * чтение/установка стилей/классов должна вызываться в raf
-//? на чтение всегда операции нужно группировать и выполнять перед изменением классов/стилей и манипуляций с dom, потому что нам доступны предыдущие положения/стили предыдущего кадра
+//? на чтение всегда операции нужно группировать и выполнять перед изменением классов/стилей и манипуляций с dom, потому что нам доступны предыдущие положения/стили предыдущего кадра - то есть читать мы можем без проблем - а установка будет вызывать перекомпановку
 
 // https://gist.github.com/paulirish/5d52fb081b3570c81e3a#getting-box-metrics
 //? * очень много стилей/добавление классов - не важно, через css или js - вызывают пересчет стилей - делать это нужно аккуратно
@@ -5458,6 +5980,7 @@ console.log("Welcome to loupe.");
 *****/
 //!=============================================================================
 //? /PWA/Progressive web applications/
+// https://web.dev/learn/pwa
 // https://web.dev/explore/progressive-web-apps
 //? ведет себя как приложение, то есть может работать и офлайн, открываеся в новом окне браузера - а не на вкладке дополнительное, так пользователь чувствует это приложение приложением
 
@@ -5487,6 +6010,12 @@ console.log("Welcome to loupe.");
 //? чтобы приложение было устанавливаемым, нужно webmanifest, https
 
 //? приложения можно настроить и установить и из магазина, нужено TWA, а также просто из браузера
+/*
+**
+***
+****
+*****/
+//? setAppBadge - для PWA указывает количество непрочитанных уведомлений
 /*
 **
 ***
@@ -5754,18 +6283,30 @@ controller.abort();
 // https://learn.javascript.ru/cookie
 // https://techcrunch.com/2020/05/06/no-cookie-consent-walls-and-no-scrolling-isnt-consent-says-eu-data-protection-body/?guccounter=1
 //? файл отправляется на каждый запрос на сервер
+
 //? ограничение по размеру и если он большой - каждый запрос будет медленнее
+
 //? нет в webWorker/serviceWorker
+
 //? только строки
+
 //? для домена примерно 20+ записей в куках может содержаться, от браузера зависит
+
 //? хранится ключ=значение;ключ=значение;
+
 //? хранятся пока живет вкладка, если нет expires/max-age
-//? Set-Cookie можно установить httpOnly, чтобы нельзя было получить доступ к куке через js
 
 
-//? document.cookie - чтение/запись(перезаписывать все не будет)
-//? Cookie - заголово отправляет куки с запросом каждым
-//? Set-Cookie заголовок устанавливает
+
+//? document.cookie - чтение/запись(перезаписывать все не будет), это большая строка, которую нужно разбить, чтобы прочесть ключи
+
+//? Cookie - заголовок отправляет куки с запросом
+
+//? Set-Cookie - сервер заголовок устанавливает
+//? cookieName=cookieValue
+//? httpOnly чтобы нельзя было получить доступ к куке через js
+//? Secure - только https/ssl
+//? Path - на каком пути будет отправляться кука
 /*
 **
 ***
@@ -5841,6 +6382,7 @@ controller.abort();
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API
 // https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers
 // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/install_event
+// https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent
 //? выступают в виде proxy, нужны для перехватки запросов, оффлайн опыт
 //? background api/push notification - есть доступ к ним
 //? https only, но локально можно для теста
@@ -5850,10 +6392,17 @@ controller.abort();
 
 
 //? при вызове serviceWorker.register - сайт регистрирует/загружает воркера
-//? install
-//? activate
+
+//? install - только первый раз будет вызван и потом, если сервис воркер изменится
+//? waitUntil - сделать логику, после которой воркер можно установить - иначе - он не будет установлен(если функция ошибкой завершится)
+
+//? activate - только первый раз будет вызван и потом, если сервис воркер изменится
+
 //? дальше будет загружен всегда тот же воркер до тех пор - пока ссылка на воркер не поменяется(новый файл не будет предоставлен), то есть после регистрации - при дальнейшем заходе на сайт - данный воркер будет срабатывать раньше всего - то есть воркер зарегестрировали - все - он работает в виде прокси
 //? будет один для всех данных страниц
+//!=============================================================================
+//? /Notifications/
+// https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API
 /*
 **
 ***
@@ -5888,8 +6437,67 @@ controller.abort();
 ***
 ****
 *****/
+//!=============================================================================
+//? /Navigator/
+//? доступы к соединению, батарейке и тд
 
 
+//? getBattery
+//? sendBeacon
+//? setAppBadge - для SPA указывает количество непрочитанных уведомлений
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Lock/
+// https://developer.mozilla.org/en-US/docs/Web/API/Web_Locks_API
+//? позволяет по именам регистрировать процессы, которые будут выполняться в порядке регистрации(некая очередь), то есть регистрируем 'process 1', и все остальные колбэки которые будут зарегестрированы под этим ключем будут ждать предыдущий, а если под другим ключем - будет другая очередь процессов
+//? для отдельной владки в этом же источнике будет использоваться та же очередь - то есть если мы из другой вкладки добавили таски на выполнение - будем ждать пока не выполнятся все таски, добавленные до нас из другой вкладки
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Activation/
+// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/userActivation
+//? взаимодействовал ли пользователь со страницей и статус активности
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /MaxTouchPoints/
+// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/maxTouchPoints
+//? количество пальцев поддерживаемых экраном
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Mediadevices/
+// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mediaDevices
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Permission/
+// https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Scheduling/
+// https://developer.mozilla.org/en-US/docs/Web/API/Scheduling
+//? Есть ли взаимодействия пользователя ожидающие выполнения
 
 
 
@@ -5928,3 +6536,146 @@ controller.abort();
 //     text-overflow: ellipsis;
 //     word-break: break-word;
 // }
+
+
+
+
+
+
+
+
+
+
+//!=============================================================================
+//? Get highest z index
+/**
+type KeysCreateStackingContextIfNotNone = Pick<
+    CSSStyleDeclaration,
+    | 'transform'
+    | 'filter'
+    | 'backdropFilter'
+    | 'perspective'
+    | 'clipPath'
+    | 'mask'
+    | 'maskImage'
+    // | 'maskBorder' //TODO there is rule, but typings doesn't allow in to include
+>
+
+type PropertiesThatCreatesStackingContext = Pick<
+    CSSStyleDeclaration,
+    | 'zIndex'
+    | 'containerType'
+    | 'opacity'
+    | 'mixBlendMode'
+    | 'isolation'
+    | 'contain'
+    | keyof KeysCreateStackingContextIfNotNone
+>
+
+const KEYS_OBJECT_TO_NOT_BE_NONE: KeysCreateStackingContextIfNotNone = {
+    transform: 'transform',
+    filter: 'filter',
+    backdropFilter: 'backdropFilter',
+    perspective: 'perspective',
+    clipPath: 'clipPath',
+    mask: 'mask',
+    maskImage: 'maskImage',
+};
+
+const KEYS_TO_NOT_BE_NONE = Object.keys(KEYS_OBJECT_TO_NOT_BE_NONE) as (keyof KeysCreateStackingContextIfNotNone)[];
+
+const PROPERTIES_CREATES_Z_INDEX_CONTEXT: PropertiesThatCreatesStackingContext = {
+    contain: 'contain',
+    containerType: 'containerType',
+    isolation: 'isolation',
+    mixBlendMode: 'mixBlendMode',
+    opacity: 'opacity',
+    zIndex: 'zIndex',
+    ...KEYS_OBJECT_TO_NOT_BE_NONE,
+};
+
+const PROPERTIES_KEYS_CREATES_Z_INDEX_CONTEXT = Object
+    .keys(PROPERTIES_CREATES_Z_INDEX_CONTEXT) as (keyof PropertiesThatCreatesStackingContext)[];
+
+const CSS_CONTAIN_VALUES_CREATES_Z_INDEX = [
+    'strict',
+    'paint',
+    'layout',
+] as const;
+
+const CSS_DISPLAY_PARENT_VALUES = [
+    'flex',
+    'grid',
+] as const;
+
+export function getHighestZIndex(element: Element): number {
+    const zIndexes = Array.prototype.map.call<HTMLCollection, unknown[], number[]>(
+        element.children,
+        (child: Element, index: number) => {
+            if (doesElementCreateZIndexContext(child)) {
+                const zIndex = window.getComputedStyle(child).zIndex;
+                return zIndex === 'auto' ? index : Number(zIndex);
+            }
+
+            return getHighestZIndex(child);
+        },
+    );
+
+    return Math.max(0, ...zIndexes.filter(value => value >= 0));
+}
+
+export function doesElementCreateZIndexContext(element: Element): boolean {
+    const css = window.getComputedStyle(element);
+
+    if (element === document.documentElement) {
+        return true;
+    }
+
+    if (css.position === 'absolute' || css.position === 'relative' && css.zIndex !== 'auto') {
+        return true;
+    }
+
+    if (css.position === 'fixed' || css.position === 'sticky') {
+        return true;
+    }
+
+    if (css.containerType === 'size' || css.containerType === 'inline-size') {
+        return true;
+    }
+
+    const parentCss = element.parentElement && window.getComputedStyle(element.parentElement);
+    const parentHasFlexOrGrid = parentCss && CSS_DISPLAY_PARENT_VALUES.some(item => parentCss.display.includes(item));
+
+    if (parentHasFlexOrGrid && css.zIndex !== 'auto') {
+        return true;
+    }
+
+    if (Number(css.opacity) < 1) {
+        return true;
+    }
+
+    if (css.mixBlendMode !== 'normal') {
+        return true;
+    }
+
+    if (KEYS_TO_NOT_BE_NONE.some(key => css[key] != null && css[key] !== 'none')) {
+        return true;
+    }
+
+    if (css.isolation === 'isolate') {
+        return true;
+    }
+
+    const willChangeCondition = css.willChange
+        .split(',')
+        .some(key => (PROPERTIES_KEYS_CREATES_Z_INDEX_CONTEXT
+            .includes(key as keyof PropertiesThatCreatesStackingContext)
+        ));
+
+    if (willChangeCondition) {
+        return true;
+    }
+
+    return CSS_CONTAIN_VALUES_CREATES_Z_INDEX.some(item => css.contain.includes(item));
+}
+*/

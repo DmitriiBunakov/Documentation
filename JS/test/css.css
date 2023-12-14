@@ -19,3 +19,15 @@ img {
 .image-test {
     padding-top: 40%;
 }
+
+.test-box {
+    background-color: black;
+    width: 200px;
+    height: 200px;
+}
+
+.change-styles {
+    width: 500px;
+    height: 500px;
+    margin: 20px;
+}
