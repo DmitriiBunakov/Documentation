@@ -21,9 +21,6 @@
 //? composite анимации
 // https://web.dev/articles/animations-guide?hl=ru
 
-//? cookie
-// https://techcrunch.com/2020/05/06/no-cookie-consent-walls-and-no-scrolling-isnt-consent-says-eu-data-protection-body/
-
 //? fonts
 // https://developer.mozilla.org/docs/Web/CSS/@font-face
 
@@ -38,11 +35,17 @@
 
 //? https://developer.mozilla.org/ru/docs/Web/Performance/How_browsers_work
 
-//? cache/service/worker
-// https://developer.mozilla.org/ru/docs/Web/API/Cache
-
 //? https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Evolution_of_HTTP
 
 //? https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
 
 //? https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#cross-site_scripting_xss
+
+//? https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
+
+//? https://developer.mozilla.org/en-US/docs/Glossary/Fingerprinting
+
+//? https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#session_fixation
+
+//? headers
+//? https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
