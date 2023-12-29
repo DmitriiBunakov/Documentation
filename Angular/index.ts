@@ -585,6 +585,62 @@ export class TestDirective {
     }
 }
 <button *test="true;bla:12323">BUTTON</button>
+
+
+type BaseContext<T = unknown> = Record<'$implicit' | 'letVariable', T>
+
+type Context<T> = T & BaseContext<T>
+
+type IfExtendsBaseContext<T, R> = T extends Partial<BaseContext> ? never : R
+
+type ReturnNotExtendsBaseContext<T> = T extends object ? Context<T> : BaseContext<T>;
+
+type ReturnContextType<T> = IfExtendsBaseContext<T, ReturnNotExtendsBaseContext<T>>
+
+@Directive({
+    standalone: true,
+    selector: '[letVariable]',
+    exportAs: 'letVariable',
+})
+export class LetVariableDirective<T> {
+    protected readonly viewContainerRef = inject(ViewContainerRef);
+    protected readonly templateRef = inject(TemplateRef);
+
+    private view?: EmbeddedViewRef<ReturnContextType<T>>;
+    private context?: ReturnContextType<T>;
+
+    @Input() public set letVariable(data: T) {
+        this.context = {
+            $implicit: data,
+            letVariable: data,
+            ...(typeof data === 'object' ? data : {}),
+        } as ReturnContextType<T>;
+
+        if (this.view) {
+            this.view.context = this.context;
+            return;
+        }
+
+        this.view = this.viewContainerRef.createEmbeddedView(this.templateRef, this.context);
+    }
+
+    @Input() public set letVariableRecreate(data: unknown) {
+        this.recreateView();
+    }
+
+    public recreateView(): void {
+        this.view = this.viewContainerRef.createEmbeddedView(this.templateRef, this.context);
+    }
+
+    public static ngTemplateContextGuard<T>(_: LetVariableDirective<T>, _ctx: unknown): _ctx is ReturnContextType<T> {
+        return true;
+    }
+}
+
+<ng-container *letVariable="{
+    id: column.name | idTemplate : element.element$,
+    bla,
+} as vm; recreate: recreate; let default; let id='id'; let bla='bla'">
 */
 
 
@@ -1284,3 +1340,35 @@ req.subscribe();
 
 // я сказал, что мне важно самореализация и семья
 // также что я не люблю политкорректность и если людей что то не устраивает в друг друге - то разойтись - нормально
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+? с папой разговаривал насчет обучения маши(куала лумпур, когда в магазин ходил за том ямом), он сказал что под женщин прогибаться нельзя, что детей и тд нужно захотеть по собственному желанию и вообще, он скзаал, что мужчина ничего не обязан и брать на себя больше ответственности чем можешь - путь в никуда
+? он сказал что с мамой ему очень повезло и он доволен супружеской жизнью, мама очень понимающая, а папа чувствует себя перед ней виноватым (много где видимо косячил)
+
+? а насчет женщин в целом он сказал, если попадется которая пилит и тд то 2 выхода - либо развод либо веревка
+? идеально - когда женщина молится на мужчину, когда он для нее все, и что женщинам переживать проще - нас сложнее это дается
+? также говорил, что машу нужно тоже ценить за то, что делает, ну а если и что то не так - то мне точно не нужно переживать, главное это Я - я живу для себя в первую очередь
+
+? был вопрос, открыывается от программирования или закрывается (то есть истинное лицо) (тут я скажу от себя, что маша всегда была хорошей булочкой, кроме как с программированием)
+
+
+
+? хороший был разговор с папой, после этого я понял, что хочу проводить много времени с семьей, так долго в поездке и такой долгой разлуки еще не было(кроме армии), а еще переживания насчет уезда в америку, что вдруг кого то из них я больше никогда не увижу
+*/

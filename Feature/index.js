@@ -51,3 +51,5 @@
 //? https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
 
 //? html semantics
+
+//? https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
