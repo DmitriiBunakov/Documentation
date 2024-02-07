@@ -1,38 +1,25 @@
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+console.log(history.state);
+window.history.pushState({data: 'test'}, '')
+console.log(history.state);
 
-async function* createAsyncGenerator() {
-    yield sleep(1000).then(() => {
-        console.log('first console');
-        return 'first'
-    });
-    console.log(1);
-    yield sleep(1000).then(() => {
-        console.log('second console');
-        return 'second'
-    });
-    console.log(2);
-    yield sleep(1000).then(() => {
-        console.log('third console');
-        return 'third';
-    });
-    console.log(3);
-}
+setTimeout(() => {
+    window.history.pushState({data: 'test'}, '', '/test')
+    console.log(history.state);
+}, 1000)
 
-const gen = createAsyncGenerator()
+setTimeout(() => {
+    window.history.pushState(1, '', '/second')
+    console.log(history.state);
+}, 2000)
 
-gen.next().then((a) => {
-    console.log(a);
-});
-console.log('next');
 
-gen.next().then((a) => {
-    console.log(a);
-})
-console.log('next');
 
-gen.next().then((a) => {
-    console.log(a);
-})
-console.log('next');
+setTimeout(() => {
+    history.go('second');
+    console.log(history.state);
+}, 5000)
+
+setTimeout(() => {
+    history.back();
+    console.log(history.state);
+}, 5000)
