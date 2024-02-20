@@ -626,3 +626,208 @@ const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // }
 // console.log(binarySearchRecursive(array, 11));
 
+
+
+
+/*
+interface INominals {
+  50: number
+  100: number
+  500: number
+  1000: number
+  5000: number
+}
+
+class Bankomat {
+  private readonly map: INominals = {
+    50: 0,
+    100: 0,
+    500: 0,
+    1000: 0,
+    5000: 0,
+  }
+
+  private readonly map2 = Object.keys(this.map).reverse();
+
+  public putMoney(nominal: keyof INominals, quantity: number): void {
+    this.map[nominal] += quantity;
+  }
+
+  public getMoney(summa: number): Partial<INominals> {
+    return this.getRest(summa, {}, 0)
+  }
+
+  private getRest(
+    summa: number,
+    result: Partial<INominals>,
+    depth: number
+  ): Partial<INominals> {
+    const nominal = +this.map2[depth] as keyof INominals;
+    const restNominalInBankomat = this.map[nominal];
+    const quantity = Math.floor(summa/nominal);
+
+    if (!restNominalInBankomat) {
+      return this.getRest(summa, result, depth + 1);
+    }
+
+    if (restNominalInBankomat < quantity) {
+      const newQuantity = Math.floor(summa/restNominalInBankomat);
+      result[nominal] = newQuantity;
+      const rest = summa - nominal * newQuantity;
+      return this.getRest(rest, result, depth + 1);
+    }
+
+    if (quantity === 0) {
+      return this.getRest(summa, result, depth + 1);
+    }
+
+    result[nominal] = quantity;
+    const rest = summa - nominal * quantity;
+
+    return this.getRest(rest, result, depth + 1);
+  }
+}
+*/
+
+
+
+
+
+
+
+
+async function fetchWithRetries(retriesCount, ...fetchArgs) {
+    try {
+        const response = await fetch(...fetchArgs);
+        if (!response.ok) throw response.error;
+        return response;
+    } catch(error) {
+        if (!retriesCount) throw error;
+        return fetchWithRetries(--retriesCount, ...fetchArgs);
+    }
+}
+
+
+
+
+function memoize(func, time) {
+    let result;
+
+    return async function() {
+        if (result) return result;
+        result = await func();
+        setTimeout(()=>result = undefined, time)
+        return result;
+    }
+}
+
+function memoize(func, time) {
+    let result;
+    let previous;
+
+    return async function() {
+        if (previous + time >= Date.now() && result) {
+            return result;
+        }
+        result = await func();
+        previous = Date.now();
+        return result;
+    }
+}
+
+let count = 0;
+
+const sleep = (n) => new Promise(resolve => setTimeout(resolve, n))
+const getData = async () => {
+    await sleep(5000)
+    return Promise.resolve(++count)
+}
+
+const getJsonMemoize = memoize(getData, 1000)
+
+await sleep(3000)
+console.log(await getJsonMemoize()) // 1
+console.log(await getJsonMemoize()) // 1
+await sleep(3000)
+console.log(await getJsonMemoize()) // 2
+console.log(await getJsonMemoize()) // 2
+
+
+type ReduceCallback<T, Item> = (acc: T, item: Item, index: number) => T
+
+function reduce<T, Initial>(
+    array: T[],
+    callback: ReduceCallback<Initial, T>,
+    initial: Initial,
+): Initial {
+   let acc = initial
+   for (let i = 0; i < array.length; i++) {
+      acc = callback(acc, array[i], i)
+   }
+   return acc
+}
+
+// ===================================================
+
+const processTask = (task, resolve) => {
+    // время обработки задачи от 500 до 1000мс
+    const workTime = 500 + Math.floor(Math.random()*500)
+
+    setTimeout(() => {
+        console.log(task)
+        resolve()
+    }, workTime)
+}
+
+const paralleledTasks = 2
+const whenEmpty = () => console.log('Queue is empty')
+
+class Deferred {
+    resolve;
+    result = new Promise((resolve) => this.resolve = resolve);
+}
+
+class Queue {
+    tasks = [];
+    tasksInProgress = 0;    
+
+    processTask;
+    paralleledTasks;
+    whenEmpty;
+
+    constructor(
+        processTask,
+        paralleledTasks,
+        whenEmpty,
+    ){
+        this.processTask = processTask;
+        this.paralleledTasks = paralleledTasks;
+        this.whenEmpty = whenEmpty;
+    }
+
+    add(data) {
+        this.tasks.push(data);
+    }
+
+    loop() {
+        const tasks = this.tasks.splice(0, this.paralleledTasks - this.tasksInProgress);
+        
+        for (let i = 0; i < tasks.length; i++) {
+            this.tasksInProgress++;
+            const data = tasks[i];
+
+            this.processTask(data, () => {
+                this.tasksInProgress--;
+                this.loop();
+                if (!this.tasksInProgress) this.whenEmpty();
+            });            
+        }
+    }
+}
+
+const queue = new Queue(processTask, paralleledTasks, whenEmpty)
+
+queue.add('task 1')
+queue.add('task 2')
+queue.add('task 3')
+queue.loop()
