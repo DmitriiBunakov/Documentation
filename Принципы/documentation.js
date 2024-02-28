@@ -72,6 +72,18 @@
 //? конструктор приватный
 //? и метод статический генерирует экзмепляр и кэширует и потом возвращает старый
 /*
+class A {
+    private static instance: A;
+
+    constructor() {
+        if (A.instance) return A.instance;
+        A.instance = this;
+    }
+}
+const a = new A();
+const b = new A();
+*/
+/*
 **
 ***
 ****
