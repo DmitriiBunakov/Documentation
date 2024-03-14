@@ -4016,13 +4016,34 @@ let arr = [1,2,3];
 
 
 
+//? Если у нас стоит задача объединять массивы - то:
+//? push(...array) - самый быстрый вариант - потому что когда мы пушим будет происходить аммортизация массива и он сразу будет увеличен вдвое
+//? затем concat - тоже отличный вариант, но немного медленнее
+//? spread - из за итератора идет долго, тк в итераторе создаются лишние обьекты и много доп операций
+/*
+const first = Array(10_000).fill(null).map((_, index )=> index);
+const second = Array(10_000).fill(null).map((_, index )=> first.length + index);
+
+let result: number[] = [];
+console.time();
+for (let index = 0; index < 10_0; index++) {
+    // result = result.concat(first, second); //50-170
+    // result = [...result, ...first, ...second]; //1910-3500
+    // result.push(...first, ...second); //30-70
+}
+console.timeEnd();
+
+console.log(result.length / 1_000_000);
+*/
 
 
 
-
-
-
-
+//? для перебора быстрее всего: for, forEach, forOf, forIn(тут совсем все плохо)
+/*
+**
+***
+****
+*****/
 //!================================================================================================================================================
 //? /Итерируемые перебираемые обьекты/Symbol.iterator/Iterator/
 // https://learn.javascript.ru/iterable
