@@ -1,0 +1,8 @@
+.test {
+    color: red;
+    pointer-events: none;
+}
+
+.test:active {
+    color: green;
+}

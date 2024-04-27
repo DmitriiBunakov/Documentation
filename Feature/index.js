@@ -21,9 +21,6 @@
 //? composite анимации
 // https://web.dev/articles/animations-guide?hl=ru
 
-//? fonts
-// https://developer.mozilla.org/docs/Web/CSS/@font-face
-
 //? at rules
 // https://developer.mozilla.org/ru/docs/Web/CSS/@font-face
 
