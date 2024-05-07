@@ -1,22 +1,8 @@
-const source = new EventSource('http://localhost:5500')
 
-source.addEventListener('message', (event) => {
-    console.log(event);
+const worker = new Worker('./worker.js');
+
+worker.addEventListener('message', event => {
+    console.log('event from worker', event);
 })
 
-source.addEventListener('error', (error) => {
-    console.log(error);
-})
-
-
-// setTimeout(() => {
-//     fetch('http://localhost:5500')
-//         .then(console.log)
-// }, 1000)
-
-
-
-setTimeout(() => {
-    console.log('close');
-    source.close();
-}, 10000)
+worker.postMessage('some data');
