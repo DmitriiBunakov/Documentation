@@ -1,19 +1,10 @@
 
-// const worker = new Worker('./worker.js');
+const p = new URLSearchParams({
+    space: 'Bunakov Dima',
+    plus: 'karp+masha%20test%2B'
+});
 
-// worker.addEventListener('message', event => {
-//     console.log('event from worker', event);
-// })
+console.log(p.toString());
 
-// worker.postMessage('some data');
-
-
-fetch('http://127.0.0.1:3000')
-    .then(data => {
-        console.log(data);
-        return data.json()
-    })
-    .then(console.log)
-    .catch(e => {
-        console.log(e);
-    })
+console.log(encodeURI('Bunakov Dima' + 'karp+masha'));
+console.log(encodeURIComponent('Bunakov Dima' + 'karp+masha'));

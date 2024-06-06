@@ -1,8 +1,16 @@
-.test {
+
+/* .test-button:focus {
     color: red;
-    pointer-events: none;
 }
 
-.test:active {
-    color: green;
+.test-input:focus {
+    color: red;
+} */
+
+.test-button:focus-visible {
+    color: red;
+}
+
+.test-input:focus-visible {
+    color: red;
 }
