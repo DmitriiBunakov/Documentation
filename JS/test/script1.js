@@ -1,61 +1,36 @@
-// const baseUrl = 'https://api.telegram.org/bot';
-// const token = '7307127354:AAGSe8U2uIyb-1W9yyYq3aq2M4RIU5ivvHA';
-// const apiUrl = baseUrl + token;
+// const fs = require('fs')
 
-// const METHODS = {
-//     getMe: 'getMe',
-//     sendMessage: 'sendMessage',
-//     getUpdates: 'getUpdates',
-//     setWebhook: 'setWebhook',
-// }
+// console.log('1');
 
-// function generateApiUrl(method) {
-//     return `${apiUrl}/${method}`;
-// }
+// setImmediate(() => {
+//     console.log('setImmediate');
+// })
 
+// fs.readFile('./script1.js', () => {
+//     console.log('readFile');
+// })
 
-// class Requests {
-//     getMe() {
-//         return fetch(generateApiUrl(METHODS.getMe))
-//             .then(response => response.json())
-//     }
+// process.nextTick(() => {
+//     console.log('nextTick');
+// })
 
-//     sendMessage(params) {
-//         return fetch(`${generateApiUrl(METHODS.sendMessage)}${params}`, {
-//             method: 'POST',
-//         })
-//         .then(response => response.json())
-//     }
+// setTimeout(() => {
+//     console.log('setTimeout');
 
-//     getUpdates() {
-//         return fetch(generateApiUrl(METHODS.getUpdates))
-//             .then(response => response.json())
-//     }
+//     process.nextTick(() => {
+//         console.log('nextTick');
+//     })
+// })
 
-//     setWebhook() {
-//         return fetch(generateApiUrl(METHODS.setWebhook))
-//             .then(response => response.json())
-//     }
-// }
+// queueMicrotask(() => {
+//     console.log('queueMicrotask');
 
+//     process.nextTick(() => {
+//         console.log('nextTick');
+//     })
+// })
 
-// const requestsService = new Requests();
-
-
-// requestsService.getMe()
-//     .then(console.log)
-
-
-// const params = new URLSearchParams();
-// params.append('chat_id', 957884125);
-// params.append('text', 'test');
-
-// requestsService.sendMessage(`?${params.toString()}`)
-//     .then(console.log)
-
-
-// requestsService.getUpdates()
-//     .then(console.log)
-
-// requestsService.setWebhook()
-//     .then(console.log)
+// Promise.resolve()
+//     .then(() => {
+//         console.log('resolve');
+//     })

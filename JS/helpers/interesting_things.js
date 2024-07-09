@@ -831,3 +831,94 @@ queue.add('task 1')
 queue.add('task 2')
 queue.add('task 3')
 queue.loop()
+
+
+
+
+
+
+
+
+
+
+
+// https://www.youtube.com/watch?v=wYA2cIRYLoA&ab_channel=TimurShemsedinov
+// ASYNC
+
+const array = Array(1_000_000).fill(undefined);
+
+
+
+function asyncEach(array, callback) {
+    return each(array, callback);
+}
+
+function each(array, callback, startDate = Date.now(), startIndex = 0) {
+    return new Promise(resolve => {
+        for (let index = startIndex; index < array.length; index++) {
+            callback(array[index], index, array);
+
+            if (Date.now() >= startDate + 10) {
+                setTimeout(async () => {
+                    await each(array, callback, Date.now(), index + 1);
+                    resolve();
+                });
+
+                return;
+            }
+        }
+
+        resolve();
+    })
+}
+
+function asyncMap(array, callback) {
+    return map(array, callback);
+}
+
+
+function map(array, callback, startDate = Date.now(), startIndex = 0, resultArray = Array(array.length)) {
+    return new Promise(resolve => {
+        for (let index = startIndex; index < array.length; index++) {
+            resultArray[index] = callback(array[index], index, array);
+
+            if (Date.now() >= startDate + 10) {
+                setTimeout(async () => {
+                    await map(array, callback, Date.now(), index + 1, resultArray);
+                    resolve(resultArray);
+                });
+
+                return;
+            }
+        }
+
+        resolve(resultArray);
+    })
+}
+
+
+// console.time('sync');
+// array.forEach(item => {
+//     console.log(item);
+// })
+// console.timeEnd('sync');
+
+// (async () => {
+//     console.time('async');
+//     await asyncEach(array, (item, index) => {
+//         console.log(item);
+//     })
+//     console.timeEnd('async');
+// })();
+
+console.time('syncmap')
+const r = array.map((_, index) => index);
+console.log(r);
+console.timeEnd('syncmap');
+
+(async () => {
+    console.time('asyncMap');
+    const result = await asyncMap(array, (_, index) => index)
+    console.log('result', result);
+    console.timeEnd('asyncMap');
+})();

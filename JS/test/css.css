@@ -7,6 +7,10 @@
     color: red;
 } */
 
+div:hover {
+    color: red;
+}
+
 .test-button:focus-visible {
     color: red;
 }
