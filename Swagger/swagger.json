@@ -1,0 +1,156 @@
+{
+    "openapi": "3.0.0", //версия сваггера обязательна
+    "info": {
+        "title": "Fundist back-office API", //обязательно
+        "version": "1.0.0" //обязательно
+    },
+    "servers": [
+        {
+            "url": "https://webapiqa.fundist.org/v1/", //базовый путь для запросов для всего приложения
+            "description": "QA environment"
+        },
+        {
+            "url": "/v1",
+            "description": "Custom domain"
+        }
+    ],
+    "paths": {
+        "servers": [],// базовый путь для запросов для КОНКРЕТНО этого эндпойнта
+        "/me": {
+            "servers": [],// базовый путь для запросов для КОНКРЕТНО этого эндпойнта
+            "get": {
+                "deprecated": true, //указать что запрос устарел
+                "operationId": "uniqUd",//уникальная строка на ВСЕМ проекте для данного запроса
+                "tags": [ //группировка запросов по логике в один блок для визуализации на сайте(для генерации в angular ОБЯЗАТЕЛЬНО ЧТОБЫ БЫЛ ОДИН ТЭГ иначе будет сгенерировано столько сервисиов сколько и тэгов)
+                    "Me - auth user info"
+                ],
+                "summary": "Authenticated user",
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Me"//можно ссылаться на components, но надо не забывать, что  если одна ссылка ссылается на другую - ref полностью заменяет собой текущее определение, то есть если бы тут было type: "string", то ref заменил бы все своей ссылкой
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/{secondId}": {
+            "description": "Users requests",
+            "parameters": [
+                {
+                    "in": "path", //где параметры
+                    "name": "id",
+                    "description": "User id",
+                    "required": true,//обязательность
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                {
+                    "in": "path",
+                    "name": "secondId",
+                    "description": "Users second id",
+                    "required": false,
+                    "schema": {
+                        "type": "integer"
+                    }
+                },
+                {
+                    "in": "query",//квери
+                    "name": "first name value",
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "in": "query",
+                    "name": "familyNames",
+                    "explode": false, //либо через запятую, либо отдельным параметром отправляться будет(тоже самое для обьектов)
+                    "schema": {
+                        "oneOf": [],//можно передать разные определения, чтобы был вариант передать какое то из этих
+                        "anyOf": [],//можно передать разные определения, чтобы был вариант передать какое то из этих
+                        "type": "array",//тип квери параметра - массив
+                        "uniqueItems": true, //ожидается уникальный набор(SET при генерации ожидается, нужно на уровне приложения обрабатывать такие запросы, желательно такое не использовать в TS генерации)
+                        "items": {
+                            "type": "string" //тип квери параметра(каждый элемент массива)
+                        }
+                    }
+                },
+                {
+                    "in": "query",
+                    "name": "enumTest",
+                    "explode": false,
+                    "style": "deepObject",
+                    "schema": {
+                        "type": "string",
+                        "nullable": true, //можно отправить null и сервер его примет как значение
+                        "enum": [//перечисление данного возможно поля
+                            "first",
+                            "second",
+                            "third"
+                        ]
+                    }
+                },
+            ],
+            "get": {
+                "tags": [
+                    "Users data"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "oneOf": [// что то из этого вернется
+                                                {
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "type": "string"
+                                                },
+                                                {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "integer",
+                                                        "enum": [
+                                                            1,2,3,4,5//для того, чтобы типизация при генерации вывелась нормально, нужно вынести этот тип в ссылку и ссылаться на него через #ref
+                                                        ]
+                                                    },
+                                                    "enum": [
+                                                        1,2,3,4,5
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "valueAdditionalProperties": {
+                                            "type": "object",
+                                            "additionalProperties": {//хэшмап
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+}
