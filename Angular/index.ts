@@ -583,6 +583,11 @@ public onChangeInput(event: Event): void {
 //? Очень часто применяют к контейнеры директиву NgTemplateOutlet, которая вставляет TemplateRef в шаблон
 
 //? ngComponentOutlet для рендера компонентов, а также туда можно прокидывать input/injector/ и тд
+/*
+type PickAllInputs<T> = {
+    [K in keyof T as T[K] extends InputSignal<unknown> ? K : never]: T[K] extends InputSignal<infer R> ? R : never
+};
+*/
 
 
 
