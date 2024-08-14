@@ -730,7 +730,12 @@ export class LetVariableDirective<T> {
 //? можно применить несколько host директив к компоненту описав их в декоратор, а также директива сама может содержать несколько других директив
 
 //? все директивы примененные к host элементу, компоненту, и тд, для них всех будет один инжектор - то есть если компонент содержит providers, и все директивы которые для этого компонента применяются содержат providers, то все директивы и компонент могут получить эти данные, они между собой их разделят
-//? если компонент viewProviders имеет директивы этого компонента уже не имеют доступ, тк viewProviders это уже только для view этого компонента доступны провайдеры
+//? если компонент viewProviders имеет, директивы этого компонента уже не имеют доступ, тк viewProviders это уже только для view этого компонента доступны провайдеры
+
+
+//? Порядок создания: HostDirective => Component => Directives (те, которые применены на данном тэге вместе с компонентом)
+//? Порядок поиска провайдеров: Самый главные - провайдеры директив, потом провайдеры компонента, потом хост директив, в такой последовательности будет поиск токена для данных сущностей
+//? Порядок выполнения хуков такой же как и инициализации: HostDirective => Component => Directives
 
 
 
@@ -1176,6 +1181,39 @@ class Child{}
 //? /Component less/Empty path/Пустой путь/
 // https://www.youtube.com/watch?v=2QgcMLAmm1s
 //? Можно использовать пустой путь, и в children поместить пути и компоненты, для которых нужны одни и те же guards/resolvers чтобы не вызывать одни и те же для разных роутов
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Events/
+
+
+//? NavigationCancel SupersededByNewNavigation (SupersededByNewNavigation/GuardRejected/NoDataFromResolver)
+//? NavigationSkipped (IgnoredSameUrlNavigation/IgnoredByUrlHandlingStrategy)
+//? NavigationStart
+//? RoutesRecognized
+//? NavigationStart
+//? GuardsCheckStart
+//? GuardsCheckEnd
+//? NavigationCancel (GuardRejected)
+//? ResolveStart
+//? NavigationCancel (NoDataFromResolver)
+//? ResolveEnd
+//? BeforeActivateRoutes
+//? ActivationEnd/ChildActivationEnd
+//? NavigationEnd
+//? NavigationCancel (SupersededByNewNavigation)
+//? NavigationCancel
+//? RedirectRequest
+//? NavigationError
+/*
+**
+***
+****
+*****/
+
 
 
 
