@@ -1,12 +1,14 @@
 
-console.log('worker');
+export let a = 1
 
-self.addEventListener('message', (event) => {
-    console.log(event);
-})
+// console.log('worker');
 
-let c = 0;
-setInterval(() => {
-    self.postMessage(c);
-    c++;
-}, 2000);
+// self.addEventListener('message', (event) => {
+//     console.log(event);
+// })
+
+// let c = 0;
+// setInterval(() => {
+//     self.postMessage(c);
+//     c++;
+// }, 2000);

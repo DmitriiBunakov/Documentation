@@ -1,36 +1,20 @@
-// const fs = require('fs')
 
-// console.log('1');
+setTimeout(() => {
 
-// setImmediate(() => {
-//     console.log('setImmediate');
-// })
+queueMicrotask(() => {
+    console.log('queueMicrotask');
+})
 
-// fs.readFile('./script1.js', () => {
-//     console.log('readFile');
-// })
+requestAnimationFrame(() => {
+    console.log('raf');
+})
 
-// process.nextTick(() => {
-//     console.log('nextTick');
-// })
+setTimeout(() => {
+    console.log('timer');
+},)
 
-// setTimeout(() => {
-//     console.log('setTimeout');
-
-//     process.nextTick(() => {
-//         console.log('nextTick');
-//     })
-// })
-
-// queueMicrotask(() => {
-//     console.log('queueMicrotask');
-
-//     process.nextTick(() => {
-//         console.log('nextTick');
-//     })
-// })
-
-// Promise.resolve()
-//     .then(() => {
-//         console.log('resolve');
-//     })
+Promise.resolve()
+    .then(() => {
+        console.log('resolve');
+    })
+})
