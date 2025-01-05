@@ -104,6 +104,68 @@ const b = new A();
 //? /Decorator/Декоратор/
 //? Класс обертка, которая навешивает дополнительную логику и вызывает исходные методы
 /*
+Интерфейс Order
+typescript
+Копировать код
+interface Order {
+  getTotalAmount(): number;
+}
+Конкретный компонент SimpleOrder
+typescript
+Копировать код
+class SimpleOrder implements Order {
+  private amount: number;
+
+  constructor(amount: number) {
+    this.amount = amount;
+  }
+
+  getTotalAmount(): number {
+    return this.amount;
+  }
+}
+Декораторы для скидок
+Процентная скидка
+typescript
+Копировать код
+class PercentageDiscountDecorator extends MessageDecorator {
+  private percentage: number;
+
+  constructor(order: Order, percentage: number) {
+    super(order);
+    this.percentage = percentage;
+  }
+
+  getTotalAmount(): number {
+    return this.message.getTotalAmount() * (1 - this.percentage / 100);
+  }
+}
+Скидка на акцию
+typescript
+Копировать код
+class PromotionDiscountDecorator extends MessageDecorator {
+  private promotionAmount: number;
+
+  constructor(order: Order, promotionAmount: number) {
+    super(order);
+    this.promotionAmount = promotionAmount;
+  }
+
+  getTotalAmount(): number {
+    return this.message.getTotalAmount() - this.promotionAmount;
+  }
+}
+Клиентский код
+typescript
+Копировать код
+const order = new SimpleOrder(1000);
+const orderWithPercentageDiscount = new PercentageDiscountDecorator(order, 10);
+const orderWithPromotionDiscount = new PromotionDiscountDecorator(orderWithPercentageDiscount, 100);
+
+console.log(orderWithPromotionDiscount.getTotalAmount());  // 800
+В этом примере мы добавляем скидки к заказу с помощью декораторов, не изменяя исходную логику работы с заказом.
+*/
+/*
 **
 ***
 ****
@@ -119,10 +181,259 @@ const b = new A();
 //?=============================================================================
 //? /Abstract factory/Абстрактная фабрика/
 // https://refactoring.guru/ru/design-patterns/abstract-factory
-//? паттер - при котором приложение в зависимости от параметров создает ту или иную фабрику, которые в свою очередь создают Class A/Class B каждая соответственно, которые наследуются от общего интерфейса
+//? паттерн - при котором приложение в зависимости от параметров создает ту или иную фабрику, которые в свою очередь создают Class A/Class B каждая соответственно, которые наследуются от общего интерфейса
 
 //? Фабрики все наследуются от общего интерфейса и создается та или иная
 //? Каждая фабрика в свою очередь создает тот или иной обьект, которые между собой тоже имеют общий интерфейс
+
+/*
+Пример Абстрактной фабрики на TypeScript
+Предположим, мы создаём UI-компоненты для двух платформ: iOS и Android. Каждый компонент (например, кнопка и поле ввода) должен иметь свою платформенно-зависимую реализацию.
+
+1. Абстрактная фабрика
+typescript
+Копировать код
+// Интерфейс фабрики
+interface UIComponentFactory {
+  createButton(): Button;
+  createInput(): Input;
+}
+
+// Интерфейсы для продуктов
+interface Button {
+  render(): string;
+}
+
+interface Input {
+  render(): string;
+}
+2. Конкретные фабрики
+typescript
+Копировать код
+// iOS-реализация компонентов
+class IOSButton implements Button {
+  render(): string {
+    return 'Кнопка в стиле iOS';
+  }
+}
+
+class IOSInput implements Input {
+  render(): string {
+    return 'Поле ввода в стиле iOS';
+  }
+}
+
+class IOSUIComponentFactory implements UIComponentFactory {
+  createButton(): Button {
+    return new IOSButton();
+  }
+
+  createInput(): Input {
+    return new IOSInput();
+  }
+}
+
+// Android-реализация компонентов
+class AndroidButton implements Button {
+  render(): string {
+    return 'Кнопка в стиле Android';
+  }
+}
+
+class AndroidInput implements Input {
+  render(): string {
+    return 'Поле ввода в стиле Android';
+  }
+}
+
+class AndroidUIComponentFactory implements UIComponentFactory {
+  createButton(): Button {
+    return new AndroidButton();
+  }
+
+  createInput(): Input {
+    return new AndroidInput();
+  }
+}
+3. Использование
+typescript
+Копировать код
+// Клиентский код, работающий с фабрикой
+function renderUI(factory: UIComponentFactory): void {
+  const button = factory.createButton();
+  const input = factory.createInput();
+
+  console.log(button.render());
+  console.log(input.render());
+}
+
+// Пример выбора фабрики
+const platform = 'iOS'; // или 'Android'
+
+const factory: UIComponentFactory =
+  platform === 'iOS' ? new IOSUIComponentFactory() : new AndroidUIComponentFactory();
+
+renderUI(factory);
+Вывод для iOS:
+
+Кнопка в стиле iOS
+Поле ввода в стиле iOS
+Вывод для Android:
+
+Кнопка в стиле Android
+Поле ввода в стиле Android
+/
+*/
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Builder/Строитель/
+//? Создание обьекта через вызовы функций и в конечно итоге вызов build метода
+//? Удобен когда много параметров, и мы хотим по условиям добавлять данные/модифицировать их, а также внутри билдера могут быть проверки на настраиваемые данные
+//? Строитель нужен, если есть сложная логика создания
+/*
+Реализация с использованием Строителя
+1. Класс Report
+
+typescript
+Копировать код
+class Report {
+  title?: string;
+  subtitle?: string;
+  data?: any[];
+  exportFormat?: 'PDF' | 'Excel' | 'HTML';
+  metadata?: { author: string; date: Date; version?: string };
+
+  constructor(builder: ReportBuilder) {
+    this.title = builder.title;
+    this.subtitle = builder.subtitle;
+    this.data = builder.data;
+    this.exportFormat = builder.exportFormat;
+    this.metadata = builder.metadata;
+  }
+
+  generate(): void {
+    console.log(`Генерация отчёта: ${this.title}`);
+    if (this.subtitle) console.log(`Подзаголовок: ${this.subtitle}`);
+    if (this.data) console.log(`Данные: ${JSON.stringify(this.data)}`);
+    if (this.exportFormat) console.log(`Формат экспорта: ${this.exportFormat}`);
+    if (this.metadata)
+      console.log(
+        `Метаданные: Автор - ${this.metadata.author}, Дата - ${this.metadata.date}`
+      );
+  }
+}
+2. Класс ReportBuilder
+
+typescript
+Копировать код
+class ReportBuilder {
+  title?: string;
+  subtitle?: string;
+  data?: any[];
+  exportFormat?: 'PDF' | 'Excel' | 'HTML';
+  metadata?: { author: string; date: Date; version?: string };
+
+  setTitle(title: string): ReportBuilder {
+    this.title = title;
+    return this;
+  }
+
+  setSubtitle(subtitle: string): ReportBuilder {
+    this.subtitle = subtitle;
+    return this;
+  }
+
+  setData(data: any[]): ReportBuilder {
+    this.data = data;
+    return this;
+  }
+
+  setExportFormat(format: 'PDF' | 'Excel' | 'HTML'): ReportBuilder {
+    this.exportFormat = format;
+    return this;
+  }
+
+  setMetadata(author: string, date: Date, version?: string): ReportBuilder {
+    this.metadata = { author, date, version };
+    return this;
+  }
+
+  build(): Report {
+    return new Report(this);
+  }
+}
+3. Использование
+
+typescript
+Копировать код
+// Простой отчёт
+const simpleReport = new ReportBuilder()
+  .setTitle('Простой отчёт')
+  .setData([{ id: 1, value: 100 }])
+  .setExportFormat('PDF')
+  .build();
+
+simpleReport.generate();
+
+console.log('---');
+
+// Сложный отчёт
+const detailedReport = new ReportBuilder()
+  .setTitle('Сложный отчёт')
+  .setSubtitle('Анализ данных за год')
+  .setData([{ month: 'January', sales: 1200 }, { month: 'February', sales: 1500 }])
+  .setExportFormat('Excel')
+  .setMetadata('John Doe', new Date(), '1.0')
+  .build();
+
+detailedReport.generate();
+*/
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Prototype/Прототип/
+//? Создание копии обьекта через вызов метода clone, внутри может быть любая логика модифицирующая новый обьект
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Singleton/Одиночка/
+//? Единственный экземпляр класса для всего приложения, новый вызов конструктора вернет тот же самый инстанс, а также прямой вызов конструктора невозможен
+/*
+class Logger {
+  private static instance: Logger;
+
+  private constructor() {}
+
+  public static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
+  }
+
+  public log(message: string): void {
+    console.log(`Log: ${message}`);
+  }
+}
+
+// Пример использования в разных частях программы
+const logger1 = Logger.getInstance();
+const logger2 = Logger.getInstance();
+
+console.log(logger1 === logger2); // true, оба ссылаются на один и тот же объект
+В этом примере, независимо от того, сколько раз вы вызываете Logger.getInstance(), всегда будет возвращаться один и тот же экземпляр, и все сообщения будут записываться в одном месте.
+
+*/
 /*
 **
 ***
@@ -137,8 +448,183 @@ const b = new A();
 ****
 *****/
 //?=============================================================================
-//? /Model-adapter/Adapter/
+//? /Model-adapter/Adapter/Адаптер/
 //? Модель адаптер - преобразователь данных, например с бэкенда нам пришли данные и мы прогоняем их через модель адаптер для преобразования в нужный нам вид
+
+//? Либо есть какие то сущности, у которых нам нужно вызывать методы, но они отличаются в названиях, для этого мы пишем для адаптер с методом, который будет вызывать нужный метод у сущностей
+/*
+1. Интерфейсы баз данных
+typescript
+Копировать код
+// API для MySQL
+class MySQLDatabase {
+  query(sql: string): string {
+    return `Выполняется запрос SQL для MySQL: ${sql}`;
+  }
+}
+
+// API для MongoDB
+class MongoDBDatabase {
+  find(query: string): string {
+    return `Выполняется запрос MongoDB: ${query}`;
+  }
+}
+2. Унифицированный интерфейс для работы с базами данных (Target)
+typescript
+Копировать код
+interface Database {
+  execute(query: string): string;
+}
+3. Адаптеры для различных баз данных
+typescript
+Копировать код
+// Адаптер для MySQL
+class MySQLDatabaseAdapter implements Database {
+  private mysql: MySQLDatabase;
+
+  constructor(mysql: MySQLDatabase) {
+    this.mysql = mysql;
+  }
+
+  execute(query: string): string {
+    return this.mysql.query(query);
+  }
+}
+
+// Адаптер для MongoDB
+class MongoDBDatabaseAdapter implements Database {
+  private mongoDB: MongoDBDatabase;
+
+  constructor(mongoDB: MongoDBDatabase) {
+    this.mongoDB = mongoDB;
+  }
+
+  execute(query: string): string {
+    return this.mongoDB.find(query);
+  }
+}
+4. Клиентский код для выполнения запросов
+typescript
+Копировать код
+function executeQuery(database: Database, query: string) {
+  console.log(database.execute(query));
+}
+
+// Создание экземпляров адаптеров для разных баз данных
+const mysqlAdapter = new MySQLDatabaseAdapter(new MySQLDatabase());
+const mongoDBAdapter = new MongoDBDatabaseAdapter(new MongoDBDatabase());
+
+// Выполнение запросов через один унифицированный интерфейс
+executeQuery(mysqlAdapter, "SELECT * FROM users");
+executeQuery(mongoDBAdapter, "db.users.find({})");
+*/
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Composite/Композит/
+//? Древовидная структура, где у всех участников есть общий интерфейс
+//? в основном есть "простый" участники, которые не имеют детей, и "сложные" у которых есть дети а также дополнительно есть методы добавления детей и тд
+//? например есть работник и менеджер, у них есть общие методы, но у менеджера есть работники в подчинении
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Flyweight/Летучий объект/Легкий/
+//? Когда для одинаковых обьектов используются одни и те же данные, которые они должны между собой использовать, эти создаются за пределеами обьектов и передаются в них как аргумент
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Command/Команда/
+//? используется для инкапсуляции запроса в виде объекта, что позволяет параметризовать объекты с операциями, откладывать выполнение запросов или поддерживать отмену операций
+
+//? интерфейс Command execute/undo методы
+//? какие то функции
+//? реальные команды, которые мы будет выполнять, добавлять в очередь или удалять, реализации интерфейса Command
+//? Invoker - сущность которая хранит комманды, а также может их выполнять
+/*
+// 1. Интерфейс команды
+interface Command {
+  execute(): void;
+  undo(): void; // Опционально для реализации отмены
+}
+
+// 2. Получатель
+class TaskManager {
+  addTask(task: string): void {
+    console.log(`Task "${task}" added.`);
+  }
+
+  removeTask(task: string): void {
+    console.log(`Task "${task}" removed.`);
+  }
+}
+
+// 3. Конкретные команды
+class AddTaskCommand implements Command {
+  constructor(private taskManager: TaskManager, private task: string) {}
+
+  execute(): void {
+    this.taskManager.addTask(this.task);
+  }
+
+  undo(): void {
+    this.taskManager.removeTask(this.task);
+  }
+}
+
+class RemoveTaskCommand implements Command {
+  constructor(private taskManager: TaskManager, private task: string) {}
+
+  execute(): void {
+    this.taskManager.removeTask(this.task);
+  }
+
+  undo(): void {
+    this.taskManager.addTask(this.task);
+  }
+}
+
+// 4. Инициатор
+class CommandInvoker {
+  private commandHistory: Command[] = [];
+
+  executeCommand(command: Command): void {
+    command.execute();
+    this.commandHistory.push(command);
+  }
+
+  undoLastCommand(): void {
+    const command = this.commandHistory.pop();
+    if (command) {
+      command.undo();
+    } else {
+      console.log("No commands to undo.");
+    }
+  }
+}
+
+// 5. Клиент
+const taskManager = new TaskManager();
+const invoker = new CommandInvoker();
+
+const addTaskCommand = new AddTaskCommand(taskManager, "Learn Command Pattern");
+const removeTaskCommand = new RemoveTaskCommand(taskManager, "Learn Command Pattern");
+
+// Выполнение команды
+invoker.executeCommand(addTaskCommand); // Output: Task "Learn Command Pattern" added.
+invoker.undoLastCommand();             // Output: Task "Learn Command Pattern" removed.
+
+invoker.executeCommand(removeTaskCommand); // Output: Task "Learn Command Pattern" removed.
+invoker.undoLastCommand();
+*/
 /*
 **
 ***
@@ -149,6 +635,72 @@ const b = new A();
 //? Один класс, который скрывает логику работы и внутри себя и внутри работает со всеми этими сервисами и делает нужную нам логику, а нам нужно просто дернуть нужный метод и получить данные
 //? он не обязан реализовывать все данные - это просто обьект, который объединяем много логики в один метод условный который нам нужно дернуть
 //? Например у нас задача сделать корзину покупок и чтобы она сохраналась до покупки, пользователь вышел потом вернулся и тд, для каждой задачи будет сервис, cache, web-server-request, и тд, фасад же - решает проблему
+/*
+1. Подсистемы
+typescript
+Копировать код
+class LightControl {
+  turnOn(): void {
+    console.log("Освещение включено");
+  }
+  turnOff(): void {
+    console.log("Освещение выключено");
+  }
+}
+
+class Thermostat {
+  setTemperature(temperature: number): void {
+    console.log(`Температура установлена на ${temperature}°C`);
+  }
+}
+
+class SecuritySystem {
+  activate(): void {
+    console.log("Система безопасности активирована");
+  }
+  deactivate(): void {
+    console.log("Система безопасности деактивирована");
+  }
+}
+2. Фасад
+typescript
+Копировать код
+class SmartHomeFacade {
+  private lightControl: LightControl;
+  private thermostat: Thermostat;
+  private securitySystem: SecuritySystem;
+
+  constructor() {
+    this.lightControl = new LightControl();
+    this.thermostat = new Thermostat();
+    this.securitySystem = new SecuritySystem();
+  }
+
+  activateMorningRoutine(temperature: number): void {
+    console.log("Утренний режим:");
+    this.lightControl.turnOn();
+    this.thermostat.setTemperature(temperature);
+    this.securitySystem.deactivate();
+  }
+
+  activateNightRoutine(): void {
+    console.log("Ночной режим:");
+    this.lightControl.turnOff();
+    this.thermostat.setTemperature(18); // ночная температура
+    this.securitySystem.activate();
+  }
+}
+3. Клиентский код
+typescript
+Копировать код
+const smartHome = new SmartHomeFacade();
+
+// Утренний режим
+smartHome.activateMorningRoutine(22);
+
+// Ночной режим
+smartHome.activateNightRoutine();
+*/
 /*
 **
 ***
@@ -261,6 +813,15 @@ for (const iterator of object) {
 
 
 //? Грубо говоря можно это представить в виде Store, который делает что то на диспатч ивентов, и через него происходит работа приложения, другие сущности могут через Store подписываться на ивенты определенные, которые он будет слать
+//? либо просто сервис из ангулар
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Memento/Snapshot/
+//? используется для сохранения и восстановления состояния объекта без нарушения его инкапсуляции. Это полезно, когда нужно реализовать функциональность "отмены" (undo), "повтора" (redo) или отката к предыдущему состоянию.
 /*
 **
 ***
@@ -291,6 +852,12 @@ for (const iterator of object) {
 //?=============================================================================
 //? /Proxy/
 //? Обертка позволяющая перехватывать действия с обьектом и как то модифицировать их
+
+//? Proxy: Прокси чаще всего обрабатывает доступ к объекту и может решать, стоит ли передавать запрос реальному объекту. Это часто связано с ограничениями или дополнительными проверками, которые нужно выполнить перед вызовом реального объекта.
+//? Пример: Прокси для загрузки изображения только когда оно нужно.
+
+//?Decorator: Декоратор расширяет поведение объекта, добавляя новые возможности. Он не блокирует или ограничивает доступ к основным методам, а лишь добавляет новую функциональность.
+//? Пример: Декоратор, который добавляет логирование или изменяет данные, которые передаются в метод.
 /*
 **
 ***
@@ -303,6 +870,15 @@ for (const iterator of object) {
 //? Работа через абстракцию с реализациями
 //? То есть есть какой то класс Remote, который должен работать c TV/Radio, класс Remote должен уметь уменьшать звук или прибавлять на этих устройвах, то есть мы вызываем методы на Remote, а он уже в свою очередь работает с реализацией конкретной, но с какой именно нам не важно
 //? Классы реализации должны иметь общий интерфейс, с которым будет работать абстркация в виде Remote
+/*
+**
+***
+****
+*****/
+//?=============================================================================
+//? /Chain of Responsibility/Цепочка ответственности/
+//? это поведенческий паттерн проектирования, который позволяет передавать запрос по цепочке обработчиков. Каждый обработчик решает, может ли он обработать запрос, и если нет, передает его следующему обработчику в цепочке. Это позволяет избежать жесткой привязки между отправителем запроса и его обработчиком и дает гибкость в добавлении новых обработчиков без изменения существующего кода.
+//? Основная идея - Вместо того чтобы обращаться к конкретному обработчику, объект отправляет запрос в цепочку обработчиков. Каждый обработчик либо обрабатывает запрос, либо передает его следующему обработчику в цепочке.
 /*
 **
 ***
